@@ -16,6 +16,8 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
+<?import View.MapDisplayer?>
+<?import View.JoyStick?>
 <VBox prefHeight="800.0" prefWidth="1575.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
     <children>
         <MenuBar prefHeight="0.0" prefWidth="667.0" VBox.vgrow="NEVER">
@@ -85,11 +87,11 @@
                     </font>
                 </RadioButton>
                 <Label layoutX="1347.0" layoutY="68.0" prefHeight="17.0" prefWidth="84.0" text="ailiron" />
-                <Canvas fx:id="mapDisplayer" height="616.0" layoutX="10.0" layoutY="90.0" width="594.0" />
+                <MapDisplayer fx:id="mapDisplayer" height="616.0" layoutX="10.0" layoutY="90.0" width="594.0" />
                 <TextArea layoutX="632.0" layoutY="74.0" prefHeight="636.0" prefWidth="539.0" />
                 <Slider layoutX="1319.0" layoutY="368.0" />
                 <Slider layoutX="1234.0" layoutY="160.0" orientation="VERTICAL" />
-                <Pane fx:id="joyStick" layoutX="1289.0" layoutY="138.0" prefHeight="200.0" prefWidth="200.0" />
+                <JoyStick fx:id="joyStick" layoutX="1289.0" layoutY="138.0" prefHeight="200.0" prefWidth="200.0" />
             <Button layoutX="1341.0" layoutY="610.0" mnemonicParsing="false" prefHeight="125.0" prefWidth="234.0" text="Button" />
             </children>
         </AnchorPane>
