@@ -89,7 +89,7 @@
                 </RadioButton>
                 <Label layoutX="1347.0" layoutY="68.0" prefHeight="17.0" prefWidth="84.0" text="ailiron" />
                 <MapDisplayer fx:id="mapDisplayer" height="616.0" layoutX="10.0" layoutY="90.0" width="594.0" />
-                <TextArea layoutX="632.0" layoutY="74.0" prefHeight="636.0" prefWidth="539.0" />
+                <TextArea fx:id="autoPilotCode" layoutX="632.0" layoutY="74.0" prefHeight="636.0" prefWidth="539.0" />
                 <Slider layoutX="1319.0" layoutY="368.0" />
                 <Slider layoutX="1234.0" layoutY="160.0" orientation="VERTICAL" />
                 <JoyStick fx:id="joyStick" layoutX="1289.0" layoutY="138.0" prefHeight="200.0" prefWidth="200.0" />

@@ -1,7 +1,9 @@
 package View;
 
+import Intepeter.Parser;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.TextArea;
 import javafx.stage.FileChooser;
 import sample.Main;
 
@@ -16,7 +18,8 @@ public class MainWindowController implements Initializable, Observer {
     MapDisplayer mapDisplayer;
     @FXML
     JoyStick joyStick;
-
+    @FXML
+    TextArea autoPilotCode;
     @Override
     public void update(Observable o, Object arg) {
 
@@ -47,6 +50,9 @@ public class MainWindowController implements Initializable, Observer {
             }
             mapDisplayer.displayMap(records);
         }
-
     }
+    public void checkedAutoPilot(){
+        Parser.getInstance().parse(autoPilotCode.getText());
+    }
+
 }
