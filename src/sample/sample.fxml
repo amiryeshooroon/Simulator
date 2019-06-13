@@ -18,8 +18,7 @@
 
 <?import View.MapDisplayer?>
 <?import View.JoyStick?>
-
-<VBox prefHeight="800.0" prefWidth="1575.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
+<VBox prefHeight="800.0" prefWidth="1575.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="View.MainWindowController">
     <children>
         <MenuBar prefHeight="0.0" prefWidth="667.0" VBox.vgrow="NEVER">
             <menus>
@@ -66,7 +65,7 @@
                     <font>
                         <Font size="24.0" />
                     </font></Button>
-                <Button layoutX="186.0" layoutY="11.0" mnemonicParsing="false" prefHeight="65.0" prefWidth="183.0" text="Load Data">
+                <Button layoutX="186.0" layoutY="11.0" mnemonicParsing="false" prefHeight="65.0" prefWidth="183.0" text="Load Data" onAction="#onOpenFileClick">
                     <font>
                         <Font size="24.0" />
                     </font></Button>
