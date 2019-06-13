@@ -4,6 +4,7 @@ import Intepeter.Parser;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TextArea;
+import javafx.scene.control.TextInputDialog;
 import javafx.stage.FileChooser;
 import sample.Main;
 
@@ -51,14 +52,17 @@ public class MainWindowController implements Initializable, Observer {
             mapDisplayer.displayMap(records);
         }
     }
-    public void checkedAutoPilot(){
-        Parser.getInstance().parse(autoPilotCode.getText());
-    }
-    public void checkedManual(){
+
+    public void onClickConnect(){
+        TextInputDialog dialog = new TextInputDialog("");
+        dialog.setTitle("Connect");
+        dialog.setContentText("IP:Port:");
+        Optional<String> result = dialog.showAndWait();
+//        result.ifPresent(()->{
+//            //set ip port in viewmodel
+//            int x = 0;
+//            return null;
+//        });
 
     }
-    public void checkedMap(){
-
-    }
-
 }
