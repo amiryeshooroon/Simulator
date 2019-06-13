@@ -28,22 +28,25 @@ public class MainWindowController implements Initializable, Observer {
     }
 
     public void onOpenFileClick(){
-        List<List<Double>> records = new ArrayList<>();
         FileChooser fileChooser = new FileChooser();
         File file = fileChooser.showOpenDialog(Main.stage);
         if(file!=null){
+            int i=0;
+            List<List<Double>> records = new ArrayList<>();
             try (Scanner scanner = new Scanner(file)) {
                 while (scanner.hasNextLine()) {
                     String str = scanner.nextLine();
+                    if(i==0 || i==1) {
+                        i++; continue;
+                    }
                     records.add(Arrays.stream(str.split(",")).map(Double::valueOf).collect(Collectors.toList()));
+                    i++;
                 }
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             }
+            mapDisplayer.displayMap(records);
         }
-        records.forEach(lst->{
-            lst.forEach(System.out::print);
-            System.out.println();
-        });
+
     }
 }
