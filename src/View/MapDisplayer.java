@@ -18,6 +18,7 @@ public class MapDisplayer extends Canvas {
         map = newMap;
         ranges = new ArrayList<>(10);
         colors = Arrays.asList("#E83B47", "#FF9933", "#F7B26D", "#F6F66C", "D6FD87", "#CDF778", "#B5F23C", "#7FF23C", "#74E533", "#339900");
+        calculateColors();
         redraw();
     }
 
