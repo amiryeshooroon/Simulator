@@ -4,16 +4,11 @@ import Utilities.CircleLine;
 import Utilities.MyT;
 import Utilities.Point;
 import javafx.application.Platform;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.Region;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Circle;
-
 import java.util.Timer;
 import java.util.TimerTask;
-import java.util.concurrent.Future;
-
-import static java.lang.Thread.sleep;
 
 public class JoyStick extends Region {
     private Circle bigCircle;
