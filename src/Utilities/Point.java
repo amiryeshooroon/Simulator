@@ -7,8 +7,7 @@ public class Point {
         this.x = x;
         this.y = y;
     }
-
-    public double getX() {
+    public final double getX(){
         return x;
     }
 
@@ -16,7 +15,7 @@ public class Point {
         this.x = x;
     }
 
-    public double getY() {
+    public final double getY() {
         return y;
     }
 
