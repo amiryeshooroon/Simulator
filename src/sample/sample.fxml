@@ -12,13 +12,14 @@
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.ToggleGroup?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
 <?import View.MapDisplayer?>
 <?import View.JoyStick?>
-<VBox prefHeight="800.0" prefWidth="1575.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="View.MainWindowController">
+
+<VBox xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="View.MainWindowController">
     <children>
         <MenuBar prefHeight="0.0" prefWidth="667.0" VBox.vgrow="NEVER">
             <menus>
@@ -59,13 +60,13 @@
                 </Menu>
             </menus>
         </MenuBar>
-        <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="808.0" prefWidth="1456.0" VBox.vgrow="ALWAYS">
+        <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="709.0" prefWidth="1575.0" VBox.vgrow="ALWAYS">
             <children>
                 <Button layoutX="10.0" layoutY="9.0" mnemonicParsing="false" prefHeight="65.0" prefWidth="159.0" text="Connect">
                     <font>
                         <Font size="24.0" />
                     </font></Button>
-                <Button layoutX="186.0" layoutY="11.0" mnemonicParsing="false" prefHeight="65.0" prefWidth="183.0" text="Load Data" onAction="#onOpenFileClick">
+                <Button layoutX="186.0" layoutY="11.0" mnemonicParsing="false" onAction="#onOpenFileClick" prefHeight="65.0" prefWidth="183.0" text="Load Data">
                     <font>
                         <Font size="24.0" />
                     </font></Button>
@@ -73,7 +74,7 @@
                     <font>
                         <Font size="24.0" />
                     </font></Button>
-                <RadioButton layoutX="720.0" layoutY="27.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="132.0" text="Autopilot">
+                <RadioButton layoutX="923.0" layoutY="29.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="132.0" text="Autopilot">
                     <font>
                         <Font size="20.0" />
                     </font>
@@ -81,7 +82,7 @@
                         <ToggleGroup fx:id="group" />
                     </toggleGroup>
                 </RadioButton>
-                <RadioButton layoutX="1323.0" layoutY="27.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="132.0" text="Manual" toggleGroup="$group">
+                <RadioButton layoutX=" 1323.0" layoutY="27.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="132.0" selected="true" text="Manual" toggleGroup="$group">
                     <font>
                         <Font size="20.0" />
                     </font>
@@ -92,7 +93,12 @@
                 <Slider layoutX="1319.0" layoutY="368.0" />
                 <Slider layoutX="1234.0" layoutY="160.0" orientation="VERTICAL" />
                 <JoyStick fx:id="joyStick" layoutX="1289.0" layoutY="138.0" prefHeight="200.0" prefWidth="200.0" />
-            <Button layoutX="1341.0" layoutY="610.0" mnemonicParsing="false" prefHeight="125.0" prefWidth="234.0" text="Button" />
+            <Button layoutX="1286.0" layoutY="582.0" mnemonicParsing="false" prefHeight="153.0" prefWidth="289.0" text="Fly" />
+            <RadioButton layoutX="632.0" layoutY="27.0" mnemonicParsing="false" text="Map Fly" toggleGroup="$group">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </RadioButton>
             </children>
         </AnchorPane>
     </children>

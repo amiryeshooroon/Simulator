@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="Interpreter">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/../Java2PTM2/out/artifacts/JavaProj_jar/Interpreter.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$PROJECT_DIR$/../Java2PTM2/out/artifacts/JavaProj_jar/Interpreter.jar!/" />
+    </SOURCES>
+  </library>
+</component>
