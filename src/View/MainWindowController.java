@@ -6,11 +6,10 @@ import javafx.stage.FileChooser;
 import sample.Main;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.net.URL;
-import java.util.Arrays;
-import java.util.Observable;
-import java.util.Observer;
-import java.util.ResourceBundle;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class MainWindowController implements Initializable, Observer {
     @FXML
@@ -25,13 +24,26 @@ public class MainWindowController implements Initializable, Observer {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        mapDisplayer.displayMap(Arrays.asList(Arrays.asList(1.0,1.0,1.0), Arrays.asList(1.0,1.0,1.0), Arrays.asList(1.0,1.0,1.0)));
         joyStick.displayJoystick();
     }
 
     public void onOpenFileClick(){
+        List<List<Double>> records = new ArrayList<>();
         FileChooser fileChooser = new FileChooser();
         File file = fileChooser.showOpenDialog(Main.stage);
-
+        if(file!=null){
+            try (Scanner scanner = new Scanner(file)) {
+                while (scanner.hasNextLine()) {
+                    String str = scanner.nextLine();
+                    records.add(Arrays.stream(str.split(",")).map(Double::valueOf).collect(Collectors.toList()));
+                }
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+        }
+        records.forEach(lst->{
+            lst.forEach(System.out::print);
+            System.out.println();
+        });
     }
 }

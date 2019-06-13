@@ -43,9 +43,6 @@ public class JoyStick extends Region {
                             , new Point(bigCircle.getCenterX(), bigCircle.getCenterY()), bigCircle.getRadius());
                 }
                 else p = new Point(event.getX(), event.getY());
-//                for(int i=1;i<=100;i++) {
-//                    MyT<Double> x = new MyT((bigCircle.getCenterX() * i + p.getX() * (100 - i)) / 100);
-//                    MyT<Double> y = new MyT((bigCircle.getCenterY() * i + p.getY() * (100 - i)) / 100);
                     Timer t = new Timer();
                     MyT<Integer> i = new MyT<>(0);
                     t.scheduleAtFixedRate(new TimerTask() {
@@ -59,8 +56,6 @@ public class JoyStick extends Region {
                             if(x == bigCircle.getCenterX() && y == bigCircle.getCenterY()) t.cancel();
                         }
                     }, 0, 3);
-//                smallCircle.setCenterX(bigCircle.getCenterX());
-//                smallCircle.setCenterY(bigCircle.getCenterY());
             });
         });
     }

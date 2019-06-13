@@ -26,7 +26,7 @@ public class MapDisplayer extends Canvas {
 
         GraphicsContext gc = getGraphicsContext2D();
         for(int i=0;i<map.size(); i++){
-            for(int j=0;j<map.get(0).size(); j++){
+            for(int j=0;j<map.get(0).size(); j+=2){
                 gc.setFill(Color.BLUE);
                 gc.fillRect(j*cellWidth, i*cellHighet, cellWidth, cellHighet);
             }
