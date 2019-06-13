@@ -3,7 +3,7 @@ package Utilities;
 public class ColoredRange {
     private double start;
     private double end;
-    String color;
+    private String color;
 
     public ColoredRange(double start, double end, String color) {
         this.start = start;

@@ -52,9 +52,9 @@ public class MapDisplayer extends Canvas {
         GraphicsContext gc = getGraphicsContext2D();
         for(int i=0;i<map.size(); i++){
             for(int j=0;j<map.get(0).size(); j++){
-                gc.setFill(Color.WHITE);
+                gc.setFill(Color.web(getValueColor(map.get(i).get(j))));
                 gc.fillRect(j*cellWidth, i*cellHighet, cellWidth, cellHighet);
-                gc.strokeText(String.valueOf(map.get(i).get(j).intValue()), j*cellWidth, i*cellHighet, cellWidth);
+                //gc.strokeText(String.valueOf(map.get(i).get(j).intValue()), j*cellWidth, i*cellHighet, cellWidth);
             }
         }
     }
