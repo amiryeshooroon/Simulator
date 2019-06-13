@@ -54,5 +54,11 @@ public class MainWindowController implements Initializable, Observer {
     public void checkedAutoPilot(){
         Parser.getInstance().parse(autoPilotCode.getText());
     }
+    public void checkedManual(){
+
+    }
+    public void checkedMap(){
+
+    }
 
 }
