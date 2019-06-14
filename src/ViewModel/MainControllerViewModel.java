@@ -5,7 +5,10 @@ import Intepeter.Parser;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
-public class MainControllerViewModel {
+import java.util.Observable;
+import java.util.Observer;
+
+public class MainControllerViewModel extends Observable implements Observer {
     public StringProperty autopilotText;
     public StringProperty ipPortText;
 
@@ -15,9 +18,14 @@ public class MainControllerViewModel {
     }
 
     public void sendToParser(){
-        Parser.getInstance().parse(autopilotText.get());
+
     }
     public void cennectToServer(){
+
+    }
+
+    @Override
+    public void update(java.util.Observable o, Object arg) {
 
     }
 }
