@@ -1,26 +1,12 @@
 package Model;
 
 import Intepeter.Parser;
-import Search.BFS;
 import Search.Pair;
-import Search.SearcherSolver;
-import Search.State;
-import server_side.FileCacheManager;
-import server_side.MyClientHandler;
-import server_side.MySerialServer;
-import server_side.Server;
-
-import java.io.BufferedReader;
+import Utilities.SimulatorServer;
+import Utilities.SolverCommunicator;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
-import java.net.InetAddress;
-import java.net.Socket;
-import java.net.SocketTimeoutException;
 import java.util.List;
 import java.util.Observable;
-import java.util.Random;
-import java.util.function.BiFunction;
 
 public class MySimulatorModel extends Observable implements SimulatorModel {
     private double airplaneX;
@@ -28,7 +14,10 @@ public class MySimulatorModel extends Observable implements SimulatorModel {
     private String ip;
     private int port;
     private String path;
+    private SolverCommunicator solver;
+
     public MySimulatorModel() {
+        solver = new SolverCommunicator();
         path = null;
     }
 
@@ -40,38 +29,18 @@ public class MySimulatorModel extends Observable implements SimulatorModel {
 
     @Override
     public void calculatePath(List<List<Double>> map, Pair<Double, Double> start, Pair<Double, Double> end) {
-        Socket s=null;
-        PrintWriter out=null;
-        BufferedReader in=null;
-        try{
-            s=new Socket(ip,port);
-            s.setSoTimeout(300000);
-            out=new PrintWriter(s.getOutputStream());
-            in=new BufferedReader(new InputStreamReader(s.getInputStream()));
-            //can maybe announce on label that we calculating
-            for(int i=0;i<map.size();i++){
-                for(int j=0;j<map.get(i).size()-1;j++){
-                    out.print(map.get(i).get(j)+",");
-                }
-                out.println(map.get(i).get(map.get(i).size() - 1));
+        //can maybe announce on label that we calculating
+        for (List<Double> doubles : map) {
+            for (int j = 0; j < doubles.size() - 1; j++) {
+                solver.sendLineWithNoLineSeperator(doubles.get(j) + ",");
             }
-            out.println("end");
-            out.println(start.getKey().toString() + "," + start.getValue().toString());
-            out.println(end.getKey().toString() + "," + end.getValue().toString());
-            out.flush();
-            String usol=in.readLine();
-        }catch(SocketTimeoutException e){
-            //can't solve problem
-        }catch(IOException e){
-        }finally{
-            try {
-                in.close();
-                out.close();
-                s.close();
-            } catch (IOException e) {
-                //error
-            }
+            solver.sendLineWithLineSeperator(doubles.get(doubles.size() - 1).toString());
         }
+        solver.sendLineWithLineSeperator("end");
+        solver.sendLineWithLineSeperator(start.getKey().toString() + "," + start.getValue().toString());
+        solver.sendLineWithLineSeperator(end.getKey().toString() + "," + end.getValue().toString());
+        solver.flushOutput();
+        path = solver.readLine();
     }
 
     @Override
@@ -89,9 +58,13 @@ public class MySimulatorModel extends Observable implements SimulatorModel {
     }
 
     @Override
-    public void connect(String connect) {
+    public void connect(String connect, boolean flag) throws Exception {
         String[] ipPort = connect.split(":");
         ip = ipPort[0];
         port = Integer.valueOf(ipPort[1]);
+        //connect to simulator
+        if(flag) SimulatorServer.getServer().open(ip, port);
+        //connect to solver
+        else solver.connect(ip, port);
     }
 }

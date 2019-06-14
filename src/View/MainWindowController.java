@@ -1,11 +1,13 @@
 package View;
 
+import Exceptions.CantConnectToServerException;
 import Intepeter.Parser;
 import ViewModel.MainControllerViewModel;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextInputDialog;
 import javafx.stage.FileChooser;
@@ -25,19 +27,24 @@ public class MainWindowController implements Initializable, Observer {
     JoyStick joyStick;
     @FXML
     TextArea autoPilotCode;
-    StringProperty ipPort;
     MainControllerViewModel vm;
+
     public void setViewModel(MainControllerViewModel vm){
         this.vm = vm;
     }
     @Override
     public void update(Observable o, Object arg) {
-
+        if(arg instanceof CantConnectToServerException) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText("Wrong IP/port");
+            alert.setContentText("Please try change your input and try again.");
+            alert.showAndWait();
+        }
     }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        ipPort = new SimpleStringProperty();
         joyStick.displayJoystick();
     }
 
@@ -56,20 +63,27 @@ public class MainWindowController implements Initializable, Observer {
                     records.add(Arrays.stream(str.split(",")).map(Double::valueOf).collect(Collectors.toList()));
                     i++;
                 }
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            }
+            } catch (FileNotFoundException e) {}
             mapDisplayer.displayMap(records);
         }
     }
 
     public void onClickConnect(){
+        connector(true);
+    }
+    public void onClickCalculatePath(){
+        connector(false);
+    }
+
+    private void connector(boolean flag){
         TextInputDialog dialog = new TextInputDialog("");
         if(vm != null) vm.ipPortText.bind(dialog.getEditor().textProperty());
         dialog.setTitle("Connect");
         dialog.setContentText("IP:Port");
         Optional<String> result = dialog.showAndWait();
 
-        if(vm != null && result.isPresent()) vm.connectToServer();
+        if(vm != null)
+            if(flag) vm.connectToSimulator();
+            else vm.connectToSolver();
     }
 }
