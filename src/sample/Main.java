@@ -23,6 +23,7 @@ public class Main extends Application {
         //Parent root = FXMLLoader.load(getClass().getResource("sample.fxml"));
         MainWindowController mwc = fxl.getController();
         vm.addObserver(mwc);
+        mwc.setViewModel(vm);
         primaryStage.setTitle("Simulator");
         primaryStage.setScene(new Scene(root, 200, 200));
         primaryStage.show();

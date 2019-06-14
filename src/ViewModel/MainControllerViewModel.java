@@ -20,8 +20,8 @@ public class MainControllerViewModel extends Observable implements Observer {
     public void sendToParser(){
 
     }
-    public void cennectToServer(){
-
+    public void connectToServer(){
+        System.out.println(ipPortText.get());
     }
 
     @Override

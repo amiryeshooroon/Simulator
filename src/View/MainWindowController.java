@@ -1,6 +1,9 @@
 package View;
 
 import Intepeter.Parser;
+import ViewModel.MainControllerViewModel;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TextArea;
@@ -12,6 +15,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.net.URL;
 import java.util.*;
+import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 public class MainWindowController implements Initializable, Observer {
@@ -21,6 +25,11 @@ public class MainWindowController implements Initializable, Observer {
     JoyStick joyStick;
     @FXML
     TextArea autoPilotCode;
+    StringProperty ipPort;
+    MainControllerViewModel vm;
+    public void setViewModel(MainControllerViewModel vm){
+        this.vm = vm;
+    }
     @Override
     public void update(Observable o, Object arg) {
 
@@ -28,6 +37,7 @@ public class MainWindowController implements Initializable, Observer {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        ipPort = new SimpleStringProperty();
         joyStick.displayJoystick();
     }
 
@@ -55,14 +65,11 @@ public class MainWindowController implements Initializable, Observer {
 
     public void onClickConnect(){
         TextInputDialog dialog = new TextInputDialog("");
+        if(vm != null) vm.ipPortText.bind(dialog.getEditor().textProperty());
         dialog.setTitle("Connect");
-        dialog.setContentText("IP:Port:");
+        dialog.setContentText("IP:Port");
         Optional<String> result = dialog.showAndWait();
-//        result.ifPresent(()->{
-//            //set ip port in viewmodel
-//            int x = 0;
-//            return null;
-//        });
 
+        if(vm != null && result.isPresent()) vm.connectToServer();
     }
 }
