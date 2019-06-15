@@ -10,7 +10,6 @@ import java.io.PrintWriter;
 import java.net.Socket;
 
 public class SimulatorServer {
-    private int port;
     private BufferedReader in;
     private PrintWriter out;
     private Socket socket;
@@ -24,7 +23,6 @@ public class SimulatorServer {
     }
 
     public void open(String ip, int port) throws IOException {
-        this.port = port;
         socket = new Socket(ip, port);
         in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         out = new PrintWriter(socket.getOutputStream());
