@@ -14,6 +14,7 @@ import java.util.TimerTask;
 public class JoyStick extends Region {
     private Circle bigCircle;
     private Circle smallCircle;
+    private double radius, maxRadius;
     public void displayJoystick(){
         Platform.runLater(()-> {
             bigCircle = new Circle(getWidth() / 2, getHeight() / 2, getWidth() / 2, Paint.valueOf("#0000FF"));

@@ -18,8 +18,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.stage.FileChooser;
 import sample.Main;
 
-import java.io.File;
-import java.io.FileNotFoundException;
+import java.io.*;
 import java.net.URL;
 import java.util.*;
 import java.util.function.Consumer;
@@ -65,7 +64,7 @@ public class MainWindowController implements Initializable, Observer {
         if(file!=null){
             int i=0;
             List<List<Double>> records = new ArrayList<>();
-            try (Scanner scanner = new Scanner(file)) {
+            try (Scanner scanner = new Scanner(new BufferedInputStream(new FileInputStream(file)))) {
                 while (scanner.hasNextLine()) {
                     String str = scanner.nextLine();
                     if(i==0 || i==1) {
