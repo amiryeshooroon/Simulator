@@ -2,7 +2,6 @@ package View;
 
 import Exceptions.CantConnectToServerException;
 import Exceptions.WrongLimitError;
-import Intepeter.Parser;
 import ViewModel.MainControllerViewModel;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
@@ -10,10 +9,7 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Slider;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextInputDialog;
+import javafx.scene.control.*;
 import javafx.scene.input.DragEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.FileChooser;
@@ -54,7 +50,7 @@ public class MainWindowController implements Initializable, Observer {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Error");
             alert.setHeaderText("Wrong IP/port");
-            alert.setContentText("Please try change your input and try again.");
+            alert.setContentText("Please try to change your input and try again.");
             alert.showAndWait();
         }
     }
