@@ -1,6 +1,7 @@
 package View;
 
 import Exceptions.CantConnectToServerException;
+import Exceptions.WrongLimitError;
 import Intepeter.Parser;
 import ViewModel.MainControllerViewModel;
 import javafx.beans.property.SimpleStringProperty;
@@ -41,6 +42,11 @@ public class MainWindowController implements Initializable, Observer {
         this.vm = vm;
         vm.throttle.bind(throttleSlider.valueProperty());
         vm.rudder.bind(rudderSlider.valueProperty());
+        try {
+            vm.joyStick.bind(joyStick.getProperty());
+        } catch (WrongLimitError wrongLimitError) {
+            wrongLimitError.printStackTrace();
+        }
     }
     @Override
     public void update(Observable o, Object arg) {
