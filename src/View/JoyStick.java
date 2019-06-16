@@ -1,5 +1,6 @@
 package View;
 
+import Exceptions.WrongLimitError;
 import Utilities.Math.CircleLine;
 import Utilities.MyT;
 import Utilities.Math.Point;
@@ -27,7 +28,11 @@ public class JoyStick extends Region {
             super.getChildren().add(smallCircle);
             aileron = new MyProperty<>();
             elevator = new MyProperty<>();
-            property.bind(new Pair<>("aileron", aileron), new Pair<>("elevator", elevator));
+            try {
+                property.bind(new Pair<>("aileron", aileron), new Pair<>("elevator", elevator));
+            } catch (WrongLimitError wrongLimitError) {
+                wrongLimitError.printStackTrace();
+            }
             smallCircle.setOnMouseDragged(event->{
                 if(Math.hypot(Math.abs(event.getX() - bigCircle.getCenterX()), Math.abs(event.getY() - bigCircle.getCenterY())) > bigCircle.getRadius()){
                     Point p = CircleLine.getCircleLineIntersectionPoint(new Point(bigCircle.getCenterX(), bigCircle.getCenterY()), new Point(event.getX(), event.getY())
