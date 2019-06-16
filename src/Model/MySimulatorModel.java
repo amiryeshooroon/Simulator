@@ -53,6 +53,16 @@ public class MySimulatorModel extends Observable implements SimulatorModel {
     }
 
     @Override
+    public void setThrottle(double value) {
+        System.out.println(value);
+    }
+
+    @Override
+    public void setRudder(double value) {
+        System.out.println(value);
+    }
+
+    @Override
     public void joystickFly(double angle, double radius, double maxRadius, double throttle, double rudder) {
 
     }

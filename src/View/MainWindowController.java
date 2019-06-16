@@ -5,11 +5,16 @@ import Intepeter.Parser;
 import ViewModel.MainControllerViewModel;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Slider;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextInputDialog;
+import javafx.scene.input.DragEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.FileChooser;
 import sample.Main;
 
@@ -27,10 +32,16 @@ public class MainWindowController implements Initializable, Observer {
     JoyStick joyStick;
     @FXML
     TextArea autoPilotCode;
+    @FXML
+    Slider throttleSlider;
+    @FXML
+    Slider rudderSlider;
     MainControllerViewModel vm;
 
     public void setViewModel(MainControllerViewModel vm){
         this.vm = vm;
+        vm.throttle.bind(throttleSlider.valueProperty());
+        vm.rudder.bind(rudderSlider.valueProperty());
     }
     @Override
     public void update(Observable o, Object arg) {
@@ -85,5 +96,14 @@ public class MainWindowController implements Initializable, Observer {
         if(vm != null)
             if(flag) vm.connectToSimulator();
             else vm.connectToSolver();
+    }
+
+    public void dragThrottleSlider() {
+        //System.out.println(throttleSlider.getValue());
+    }
+
+    public void dragRudderSlider(MouseEvent mouseEvent) {
+      //  System.out.println(rudderSlider.getValue());
+
     }
 }

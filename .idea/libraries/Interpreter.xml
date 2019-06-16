@@ -1,11 +1,11 @@
 <component name="libraryTable">
   <library name="Interpreter">
     <CLASSES>
-      <root url="jar://$USER_HOME$/Desktop/Project/Interpreter.jar!/" />
+      <root url="jar://$USER_HOME$/Desktop/Interpreter.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES>
-      <root url="jar://$USER_HOME$/Desktop/Project/Interpreter.jar!/" />
+      <root url="jar://$USER_HOME$/Desktop/Interpreter.jar!/" />
     </SOURCES>
   </library>
 </component>
