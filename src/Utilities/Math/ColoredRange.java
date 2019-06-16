@@ -1,4 +1,4 @@
-package Utilities;
+package Utilities.Math;
 
 public class ColoredRange {
     private double start;

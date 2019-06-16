@@ -1,4 +1,4 @@
-package Utilities;
+package Utilities.Math;
 
 public class Point {
     double x, y;

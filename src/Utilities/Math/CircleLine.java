@@ -1,10 +1,8 @@
-package Utilities;
-
-import java.util.Collections;
+package Utilities.Math;
 
 public class CircleLine {
     public static Point getCircleLineIntersectionPoint(Point pointA,
-                                                             Point pointB, Point center, double radius) {
+                                                       Point pointB, Point center, double radius) {
         double baX = pointB.x - pointA.x;
         double baY = pointB.y - pointA.y;
         double caX = center.x - pointA.x;

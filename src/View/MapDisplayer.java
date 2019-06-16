@@ -1,6 +1,6 @@
 package View;
 
-import Utilities.ColoredRange;
+import Utilities.Math.ColoredRange;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;

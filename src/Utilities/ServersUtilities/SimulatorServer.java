@@ -1,7 +1,6 @@
-package Utilities;
+package Utilities.ServersUtilities;
 
 import Exceptions.NotConnectedToServerException;
-import server_side.ClientHandler;
 
 import java.io.BufferedReader;
 import java.io.IOException;

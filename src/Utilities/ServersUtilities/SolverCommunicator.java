@@ -1,4 +1,4 @@
-package Utilities;
+package Utilities.ServersUtilities;
 
 import java.io.*;
 import java.net.Socket;

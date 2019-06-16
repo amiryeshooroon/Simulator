@@ -2,9 +2,9 @@ package Model;
 
 import Intepeter.Parser;
 import Search.Pair;
-import Utilities.SimulatorServer;
-import Utilities.SolverCommunicator;
-import java.io.IOException;
+import Utilities.ServersUtilities.SimulatorServer;
+import Utilities.ServersUtilities.SolverCommunicator;
+
 import java.util.List;
 import java.util.Observable;
 

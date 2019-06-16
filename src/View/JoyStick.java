@@ -1,8 +1,8 @@
 package View;
 
-import Utilities.CircleLine;
+import Utilities.Math.CircleLine;
 import Utilities.MyT;
-import Utilities.Point;
+import Utilities.Math.Point;
 import javafx.application.Platform;
 import javafx.scene.layout.Region;
 import javafx.scene.paint.Paint;
