@@ -1,5 +1,6 @@
 package Model;
 
+import Exceptions.NotConnectedToServerException;
 import Intepeter.Parser;
 import Search.Pair;
 import Utilities.ServersUtilities.SimulatorServer;
@@ -54,16 +55,30 @@ public class MySimulatorModel extends Observable implements SimulatorModel {
 
     @Override
     public void setThrottle(double value) {
-        System.out.println(value);
+        try {
+            SimulatorServer.getServer().setVariable("/controls/engines/current-engine/throttle", value);
+        } catch (NotConnectedToServerException e) {
+            notifyObservers();
+        }
     }
 
     @Override
     public void setRudder(double value) {
-        System.out.println(value);
+        try {
+            SimulatorServer.getServer().setVariable("/controls/flight/rudder", value);
+        } catch (NotConnectedToServerException e) {
+            notifyObservers(e);
+        }
+
     }
     @Override
     public void joystickFly(double aileron, double elevator) {
-        
+        try{
+            SimulatorServer.getServer().setVariable("/controls/flight/aileron", aileron);
+            SimulatorServer.getServer().setVariable("/controls/flight/elevator", elevator);
+        }catch (NotConnectedToServerException e) {
+            notifyObservers(e);
+        }
     }
 
     @Override

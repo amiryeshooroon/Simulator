@@ -31,9 +31,9 @@ public class MainControllerViewModel extends Observable implements Observer {
         ipPortText = new SimpleStringProperty();
         throttle = new SimpleDoubleProperty();
         joyStick = new CompositeProperty<>(2);
-        joyStick.setOnUpdate(()->{
-            simulatorModel.joystickFly(joyStick.get("aileron"), joyStick.get("elevator"));
-        });
+        joyStick.setOnUpdate(()->
+            simulatorModel.joystickFly(joyStick.get("aileron"), joyStick.get("elevator"))
+        );
         throttle.addListener(
                 (observable, oldValue, newValue) -> simulatorModel.setThrottle(newValue.doubleValue())
         );
@@ -60,6 +60,7 @@ public class MainControllerViewModel extends Observable implements Observer {
         } catch (Exception e) {
             setChanged();
             notifyObservers(new CantConnectToServerException());
+            //can do connected if success like simulatorModel notifies viewModel and it notifies view and popup connected
         }
     }
 
