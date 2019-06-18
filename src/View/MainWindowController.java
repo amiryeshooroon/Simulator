@@ -8,10 +8,12 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.input.*;
+import javafx.scene.layout.Pane;
 import javafx.stage.FileChooser;
 import sample.Main;
 
@@ -32,6 +34,8 @@ public class MainWindowController implements Initializable, Observer {
     private Slider throttleSlider;
     @FXML
     private Slider rudderSlider;
+    @FXML
+    private Pane joystickPane;
     private MainControllerViewModel vm;
     private KeyCombination up, down, left, right;
     private Timer tUp, tDown, tLeft, tRight;
@@ -115,5 +119,22 @@ public class MainWindowController implements Initializable, Observer {
         if(left.match(keyEvent)) rudderSlider.setValue(rudderSlider.getValue()-0.05);
         if(right.match(keyEvent)) rudderSlider.setValue(rudderSlider.getValue()+0.05);
 
+    }
+
+    public void engine(ActionEvent actionEvent) {
+        vm.engine();
+    }
+
+    public void fly(ActionEvent actionEvent) {
+    }
+
+    public void selectManual(ActionEvent actionEvent) {
+        autoPilotCode.setDisable(true);
+        joystickPane.setDisable(false);
+    }
+
+    public void selectAutoPilot(ActionEvent actionEvent) {
+        autoPilotCode.setDisable(false);
+        joystickPane.setDisable(true);
     }
 }

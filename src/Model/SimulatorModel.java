@@ -13,4 +13,5 @@ public interface SimulatorModel {
     void setThrottle(double value);
     void setRudder(double value);
     void connect(String connect, boolean flag) throws Exception; //true = connect to simulator, false = path calculate
+    void engine();
 }

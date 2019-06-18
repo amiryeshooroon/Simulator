@@ -1,15 +1,12 @@
-package Utilities.ServersUtilities;
+package Utilities.AutoPilot.Intepeter;
 
 import Utilities.AutoPilot.Exceptions.NotConnectedToServerException;
-import Utilities.AutoPilot.Exceptions.NotConnectedToServerException;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
+import java.io.*;
 import java.net.Socket;
 
 public class SimulatorServer {
+    private int port;
     private BufferedReader in;
     private PrintWriter out;
     private Socket socket;
@@ -22,10 +19,13 @@ public class SimulatorServer {
         return ServerHolder.server;
     }
 
-    public void open(String ip, int port) throws IOException {
-        socket = new Socket(ip, port);
-        in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-        out = new PrintWriter(socket.getOutputStream());
+    public void open(String ip, int port) {
+        this.port = port;
+        try {
+            socket = new Socket(ip, port);
+            in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+            out = new PrintWriter(new OutputStreamWriter(socket.getOutputStream()));
+        } catch (IOException e1) {}
     }
     public void stop(){
         try {

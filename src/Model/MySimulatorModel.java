@@ -1,7 +1,7 @@
 package Model;
 
-import Exceptions.NotConnectedToServerException;
-import Intepeter.Parser;
+import Utilities.AutoPilot.Exceptions.NotConnectedToServerException;
+import Utilities.AutoPilot.Intepeter.Parser;
 import Search.Pair;
 import Utilities.ServersUtilities.SimulatorServer;
 import Utilities.ServersUtilities.SolverCommunicator;
@@ -108,5 +108,16 @@ public class MySimulatorModel extends Observable implements SimulatorModel {
         if(flag) SimulatorServer.getServer().open(ip, port);
         //connect to solver
         else solver.connect(ip, port);
+    }
+    @Override
+    public void engine(){
+        try {
+            SimulatorServer.getServer().setVariable("/controls/engines/engine/magnetos", 3);
+            SimulatorServer.getServer().setVariable("/controls/switches/starter", 1);
+        } catch (NotConnectedToServerException e) {
+            //e.printStackTrace();
+        }
+
+
     }
 }
