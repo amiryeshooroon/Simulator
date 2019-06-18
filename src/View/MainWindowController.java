@@ -2,6 +2,7 @@ package View;
 
 import Exceptions.CantConnectToServerException;
 import Exceptions.WrongLimitError;
+import Intepeter.Parser;
 import ViewModel.MainControllerViewModel;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
