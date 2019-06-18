@@ -27,7 +27,7 @@ public class Main extends Application {
         vm.addObserver(mwc);
         mwc.setViewModel(vm);
         primaryStage.setTitle("Simulator");
-        primaryStage.setScene(new Scene(root, 200, 200));
+        primaryStage.setScene(new Scene(root, 1175, 375));
         primaryStage.show();
     }
 

@@ -32,7 +32,11 @@ public class MainControllerViewModel extends Observable implements Observer {
         throttle = new SimpleDoubleProperty();
         joyStick = new CompositeProperty<>(2);
         joyStick.setOnUpdate(()->
-            simulatorModel.joystickFly(joyStick.get("aileron"), joyStick.get("elevator"))
+                {
+                    double aileron = joyStick.get("aileron");
+                    double elevator = joyStick.get("elevator");
+                    simulatorModel.joystickFly(aileron, elevator);
+                }
         );
         throttle.addListener(
                 (observable, oldValue, newValue) -> simulatorModel.setThrottle(newValue.doubleValue())

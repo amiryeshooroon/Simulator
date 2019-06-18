@@ -2,63 +2,24 @@
 
 <?import View.JoyStick?>
 <?import View.MapDisplayer?>
+
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.canvas.Canvas?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.Menu?>
-<?import javafx.scene.control.MenuBar?>
-<?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.RadioButton?>
-<?import javafx.scene.control.SeparatorMenuItem?>
 <?import javafx.scene.control.Slider?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.effect.Glow?>
+<?import javafx.scene.effect.Reflection?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
-
 <VBox xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="View.MainWindowController">
     <children>
-        <MenuBar prefHeight="0.0" prefWidth="667.0" VBox.vgrow="NEVER">
-            <menus>
-                <Menu mnemonicParsing="false" text="File">
-                    <items>
-                        <MenuItem mnemonicParsing="false" text="New" />
-                        <MenuItem mnemonicParsing="false" text="Open…" />
-                        <Menu mnemonicParsing="false" text="Open Recent" />
-                        <SeparatorMenuItem mnemonicParsing="false" />
-                        <MenuItem mnemonicParsing="false" text="Close" />
-                        <MenuItem mnemonicParsing="false" text="Save" />
-                        <MenuItem mnemonicParsing="false" text="Save As…" />
-                        <MenuItem mnemonicParsing="false" text="Revert" />
-                        <SeparatorMenuItem mnemonicParsing="false" />
-                        <MenuItem mnemonicParsing="false" text="Preferences…" />
-                        <SeparatorMenuItem mnemonicParsing="false" />
-                        <MenuItem mnemonicParsing="false" text="Quit" />
-                    </items>
-                </Menu>
-                <Menu mnemonicParsing="false" text="Edit">
-                    <items>
-                        <MenuItem mnemonicParsing="false" text="Undo" />
-                        <MenuItem mnemonicParsing="false" text="Redo" />
-                        <SeparatorMenuItem mnemonicParsing="false" />
-                        <MenuItem mnemonicParsing="false" text="Cut" />
-                        <MenuItem mnemonicParsing="false" text="Copy" />
-                        <MenuItem mnemonicParsing="false" text="Paste" />
-                        <MenuItem mnemonicParsing="false" text="Delete" />
-                        <SeparatorMenuItem mnemonicParsing="false" />
-                        <MenuItem mnemonicParsing="false" text="Select All" />
-                        <MenuItem mnemonicParsing="false" text="Unselect All" />
-                    </items>
-                </Menu>
-                <Menu mnemonicParsing="false" text="Help">
-                    <items>
-                        <MenuItem mnemonicParsing="false" text="About MyHelloApp" />
-                    </items>
-                </Menu>
-            </menus>
-        </MenuBar>
-        <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="709.0" prefWidth="1575.0" VBox.vgrow="ALWAYS">
+        <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="372.0" prefWidth="1075.0" VBox.vgrow="ALWAYS">
             <children>
                 <Button layoutX="10.0" layoutY="9.0" mnemonicParsing="false" onAction="#onClickConnect" prefHeight="65.0" prefWidth="159.0" text="Connect">
                     <font>
@@ -72,7 +33,7 @@
                     <font>
                         <Font size="24.0" />
                     </font></Button>
-                <RadioButton layoutX="923.0" layoutY="29.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="132.0" text="Autopilot">
+                <RadioButton layoutX="755.0" layoutY="27.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="132.0" text="Autopilot">
                     <font>
                         <Font size="20.0" />
                     </font>
@@ -80,33 +41,53 @@
                         <ToggleGroup fx:id="group" />
                     </toggleGroup>
                 </RadioButton>
-                <RadioButton layoutX=" 1323.0" layoutY="27.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="132.0" selected="true" text="Manual" toggleGroup="$group">
+                <RadioButton layoutX="930.0" layoutY="27.0" mnemonicParsing="false" prefHeight="20.0" prefWidth="117.0" selected="true" text="Manual" toggleGroup="$group">
                     <font>
                         <Font size="20.0" />
                     </font>
                 </RadioButton>
-                <Label layoutX="1340.0" layoutY="102.0" prefHeight="24.0" prefWidth="99.0" text="⇦ aileron ⇨" textAlignment="CENTER">
+                <Label layoutX="954.0" layoutY="76.0" prefHeight="24.0" prefWidth="99.0" text="⇦ aileron ⇨" textAlignment="CENTER">
                <font>
                   <Font size="19.0" />
                </font></Label>
-                <MapDisplayer fx:id="mapDisplayer" height="616.0" layoutX="10.0" layoutY="90.0" width="594.0" />
-                <TextArea fx:id="autoPilotCode" layoutX="632.0" layoutY="74.0" prefHeight="636.0" prefWidth="539.0" />
-                <Slider fx:id="rudderSlider" layoutX="1319.0" layoutY="368.0" max="1" min="-1" onMouseClicked="#dragRudderSlider" onMouseDragged="#dragRudderSlider" />
-                <Slider fx:id="throttleSlider" layoutX="1234.0" layoutY="160.0" max="1" min="-1" onMouseClicked="#dragThrottleSlider" onMouseDragged="#dragThrottleSlider" orientation="VERTICAL" />
-                <JoyStick fx:id="joyStick" layoutX="1289.0" layoutY="138.0" prefHeight="200.0" prefWidth="200.0" />
-            <Button layoutX="1286.0" layoutY="582.0" mnemonicParsing="false" prefHeight="153.0" prefWidth="289.0" text="Fly" />
-            <RadioButton layoutX="632.0" layoutY="27.0" mnemonicParsing="false" text="Map Fly" toggleGroup="$group">
+                <MapDisplayer fx:id="mapDisplayer" height="282.0" layoutX="10.0" layoutY="90.0" width="594.0" />
+                <TextArea fx:id="autoPilotCode" layoutX="632.0" layoutY="74.0" prefHeight="296.0" prefWidth="214.0" />
+                <Slider fx:id="rudderSlider" layoutX="926.0" layoutY="265.0" max="1" min="-1" onMouseClicked="#dragRudderSlider" onMouseDragged="#dragRudderSlider" showTickLabels="true" showTickMarks="true" />
+                <Slider fx:id="throttleSlider" layoutX="887.0" layoutY="100.0" max="1" min="-1" onMouseClicked="#dragThrottleSlider" onMouseDragged="#dragThrottleSlider" orientation="VERTICAL" showTickLabels="true">
+               <effect>
+                  <Glow>
+                     <input>
+                        <Reflection />
+                     </input>
+                  </Glow>
+               </effect></Slider>
+                <JoyStick fx:id="joyStick" layoutX="930.0" layoutY="108.0" prefHeight="140.0" prefWidth="132.0" bigCircleColor="#0000FF" smallCircleColor="#FF0000" />
+<!--                <Region fx:id="joyStick" layoutX="930.0" layoutY="108.0" prefHeight="140.0" prefWidth="132.0" />-->
+                <RadioButton layoutX="632.0" layoutY="27.0" mnemonicParsing="false" text="Map Fly" toggleGroup="$group">
                <font>
                   <Font size="20.0" />
                </font>
             </RadioButton>
-            <Label fx:id="myLabel" layoutX="1459.0" layoutY="226.0" rotate="90" text="⇦ Elevator ⇨">
+            <Label fx:id="myLabel" layoutX="1045.0" layoutY="164.0" rotate="90" text="⇦ Elevator ⇨">
                <font>
                   <Font size="19.0" />
                </font>
                <opaqueInsets>
                   <Insets />
                </opaqueInsets>
+            </Label>
+            <Label layoutX="842.0" layoutY="156.0" rotate="90" text="throttle">
+               <font>
+                  <Font size="19.0" />
+               </font>
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+            </Label>
+            <Label layoutX="954.0" layoutY="330.0" prefHeight="24.0" prefWidth="99.0" text="rudder" textAlignment="CENTER">
+               <font>
+                  <Font size="19.0" />
+               </font>
             </Label>
             </children>
         </AnchorPane>

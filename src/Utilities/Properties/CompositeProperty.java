@@ -28,7 +28,7 @@ public class CompositeProperty<T> implements Observer{
         properties.clear();
         for(Pair<String, MyProperty<T>> p : newProperties) {
             MyProperty<T> myProperty = new MyProperty<>();
-            p.getValue().bind(myProperty);
+            myProperty.bind(p.getValue());
             myProperty.addObserver(this);
             properties.put(p.getKey(), myProperty);
         }
@@ -40,9 +40,10 @@ public class CompositeProperty<T> implements Observer{
             p.deleteObserver(this);
         }
         properties = new HashMap<>();
-        for(String str : properties.keySet()) {
+        for(String str : cp.properties.keySet()) {
             MyProperty<T> myProperty = new MyProperty<>();
             myProperty.bind(cp.properties.get(str));
+            myProperty.addObserver(this);
             properties.put(str, myProperty);
         }
     }
@@ -60,6 +61,9 @@ public class CompositeProperty<T> implements Observer{
     }
     @Override
     public void update(Observable o, Object arg) {
-        if(onUpdate != null) onUpdate.run();
+
+        if(onUpdate != null)
+            onUpdate.run();
+
     }
 }

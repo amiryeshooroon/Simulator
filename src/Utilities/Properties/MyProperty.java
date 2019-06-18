@@ -5,8 +5,14 @@ import java.util.Observer;
 
 public class MyProperty<T> extends Observable implements Observer {
     T value;
-
+    public MyProperty(T val){
+        value = val;
+    }
+    public MyProperty(){
+        value = null;
+    }
     public void bind(MyProperty<T> property){
+        value = property.value;
         property.addObserver(this);
     }
     public void set(T value){
@@ -21,6 +27,7 @@ public class MyProperty<T> extends Observable implements Observer {
     @Override
     public void update(Observable o, Object arg) {
         MyProperty<T> t = (MyProperty<T>)o;
-        if(!value.equals(t.get())) set(t.get());
+        if(value == null || !value.equals(t.get()))
+            set(t.get());
     }
 }
