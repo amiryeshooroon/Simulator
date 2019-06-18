@@ -50,10 +50,10 @@
                <font>
                   <Font size="19.0" />
                </font></Label>
-                <MapDisplayer fx:id="mapDisplayer" height="282.0" layoutX="10.0" layoutY="90.0" width="594.0" />
+                <MapDisplayer fx:id="mapDisplayer" height="282.0" layoutX="10.0" layoutY="90.0" width="594.0" onMouseClicked="#clickOnMap"/>
                 <TextArea fx:id="autoPilotCode" layoutX="632.0" layoutY="74.0" prefHeight="296.0" prefWidth="214.0" />
-                <Slider fx:id="rudderSlider" layoutX="926.0" layoutY="265.0" max="1" min="-1" onMouseClicked="#dragRudderSlider" onMouseDragged="#dragRudderSlider" showTickLabels="true" showTickMarks="true" />
-                <Slider fx:id="throttleSlider" layoutX="887.0" layoutY="100.0" max="1" min="-1" onMouseClicked="#dragThrottleSlider" onMouseDragged="#dragThrottleSlider" orientation="VERTICAL" showTickLabels="true">
+                <Slider fx:id="rudderSlider" layoutX="926.0" layoutY="265.0" max="1" min="-1" majorTickUnit="0.1" showTickLabels="true" />
+                <Slider fx:id="throttleSlider" layoutX="887.0" layoutY="100.0" max="1" min="-1" majorTickUnit="0.1" orientation="VERTICAL" showTickLabels="true">
                <effect>
                   <Glow>
                      <input>

@@ -101,12 +101,6 @@ public class MainWindowController implements Initializable, Observer {
             else vm.connectToSolver();
     }
 
-    public void dragThrottleSlider() {
-        //System.out.println(throttleSlider.getValue());
-    }
-
-    public void dragRudderSlider(MouseEvent mouseEvent) {
-      //  System.out.println(rudderSlider.getValue());
-
+    public void clickOnMap(MouseEvent mouseEvent) {
     }
 }
