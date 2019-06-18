@@ -42,6 +42,24 @@ public class MySimulatorModel extends Observable implements SimulatorModel {
         solver.sendLineWithLineSeperator(end.getKey().toString() + "," + end.getValue().toString());
         solver.flushOutput();
         path = solver.readLine();
+        //What to do in the situations:
+        //Up:
+        //Down:
+        //Left:
+        //Right:
+        //it depends let put index for each case Up will be 3 Down will be 4 Left will be 2 Right will be 1
+        //now we need to build a function, we can assume that we won't get up and than down or the opposite same thing
+        //about right and left so what we going to do?
+        //0 to 1 90
+        //0 to 3 -90
+        //1 to 2 90
+        //1 to 0 -90
+        //2 to 3 90
+        //2 to 1 -90
+        //3 to 0 90
+        //3 to 2 -90
+        //(where-from)*90
+        //if(from > where) (-1)^(1+
     }
 
     @Override
