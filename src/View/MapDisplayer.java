@@ -52,6 +52,8 @@ public class MapDisplayer extends Canvas {
             for(int j=0;j<map.get(0).size(); j++){
                 gc.setFill(Color.color( 1 - (map.get(i).get(j)-minHighet)/(maxHighet-minHighet), (map.get(i).get(j)-minHighet)/(maxHighet-minHighet),0));
                 gc.fillRect(j*cellWidth, i*cellHighet, cellWidth, cellHighet);
+//                gc.setFill(Color.color( 0, 0,0));
+//                gc.fillOval(j*cellWidth, i*cellHighet,cellWidth,cellHighet);
             }
         }
     }

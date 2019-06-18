@@ -61,7 +61,7 @@
                      </input>
                   </Glow>
                </effect></Slider>
-                <JoyStick fx:id="joyStick" layoutX="930.0" layoutY="108.0" prefHeight="140.0" prefWidth="132.0" bigCircleColor="#0000FF" smallCircleColor="#FF0000" />
+                <JoyStick fx:id="joyStick" layoutX="930.0" layoutY="108.0" prefHeight="140.0" prefWidth="132.0" bigCircleColor="#847777" smallCircleColor="#685453" />
 <!--                <Region fx:id="joyStick" layoutX="930.0" layoutY="108.0" prefHeight="140.0" prefWidth="132.0" />-->
                 <RadioButton layoutX="632.0" layoutY="27.0" mnemonicParsing="false" text="Map Fly" toggleGroup="$group">
                <font>
