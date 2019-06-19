@@ -43,6 +43,9 @@ public class JoyStick extends Pane {
                 wrongLimitError.printStackTrace();
             }
             smallCircle.setOnMouseDragged(event->{
+                if(t != null){
+                    t.getT().cancel();
+                }
                 if(Math.hypot(Math.abs(event.getX() - bigCircle.getCenterX()), Math.abs(event.getY() - bigCircle.getCenterY())) > bigCircle.getRadius()){
                     Point p = CircleLine.getCircleLineIntersectionPoint(new Point(bigCircle.getCenterX(), bigCircle.getCenterY()), new Point(event.getX(), event.getY())
                             , new Point(bigCircle.getCenterX(), bigCircle.getCenterY()), bigCircle.getRadius());

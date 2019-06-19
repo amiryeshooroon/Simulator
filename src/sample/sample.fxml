@@ -30,7 +30,7 @@
                     <font>
                         <Font size="20.0" />
                     </font></Button>
-                <RadioButton layoutX="538.0" layoutY="28.0" mnemonicParsing="false" onAction="#selectAutoPilot" prefHeight="30.0" prefWidth="132.0" text="Autopilot">
+                <RadioButton layoutX="538.0" layoutY="28.0" mnemonicParsing="false" onAction="#selectAutoPilot" prefHeight="30.0" prefWidth="132.0" text="Autopilot" focusTraversable="false">
                     <font>
                         <Font size="20.0" />
                     </font>
@@ -38,17 +38,17 @@
                         <ToggleGroup fx:id="group" />
                     </toggleGroup>
                 </RadioButton>
-                <RadioButton layoutX="955.0" layoutY="30.0" mnemonicParsing="false" onAction="#selectManual" prefHeight="20.0" prefWidth="117.0" selected="true" text="Manual" toggleGroup="$group">
+                <RadioButton layoutX="955.0" layoutY="30.0" mnemonicParsing="false" onAction="#selectManual" prefHeight="20.0" prefWidth="117.0" selected="true" text="Manual" toggleGroup="$group" focusTraversable="false">
                     <font>
                         <Font size="20.0" />
                     </font>
                 </RadioButton>
                 <MapDisplayer fx:id="mapDisplayer" height="282.0" layoutX="10.0" layoutY="73.0" onMouseClicked="#clickOnMap" width="470.0" />
-                <Pane fx:id="autoPilotPane" layoutX="472.0" layoutY="61.0" maxWidth="810.0" prefHeight="384.0" prefWidth="342.0">
+                <Pane fx:id="autoPilotPane" layoutX="472.0" layoutY="61.0" maxWidth="810.0" prefHeight="384.0" prefWidth="342.0" disable="true">
                     <children>
                     <Button fx:id="flyBtn" layoutX="239.0" layoutY="44.0" mnemonicParsing="false" onAction="#fly" prefHeight="3.0" prefWidth="89.0" text="Run" />
                         <Button layoutX="239.0" layoutY="9.0" mnemonicParsing="false" onAction="#loadScript" text="Load Script" />
-                    <TextArea fx:id="autoPilotCode" disable="false" layoutX="28.0" layoutY="7.0" prefHeight="372.0" prefWidth="204.0" />
+                    <TextArea fx:id="autoPilotCode" layoutX="28.0" layoutY="7.0" prefHeight="372.0" prefWidth="204.0" />
                     </children>
                 </Pane>
                 <AnchorPane fx:id="joystickPane" layoutX="810.0" layoutY="57.0" prefHeight="296.0" prefWidth="406.0">
