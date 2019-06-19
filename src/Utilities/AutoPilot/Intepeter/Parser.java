@@ -1,5 +1,6 @@
 package Utilities.AutoPilot.Intepeter;
 
+import Exceptions.CodeErrorException;
 import Utilities.AutoPilot.Expression.Function;
 import Utilities.AutoPilot.Intepeter.Commands.*;
 
@@ -80,7 +81,7 @@ public class Parser {
         scopes = new ArrayDeque<>();
         scopes.addLast(new Scope());
     }
-    public double parse(String codeStr){
+    public double parse(String codeStr) throws CodeErrorException {
         String[] code = Lexer.lexer(codeStr);
         ((ReturnCommand)commandMap.get("return")).setReturnValue(0);
         int len = code.length;
@@ -106,7 +107,7 @@ public class Parser {
                 try {
                     command.doCommand(argumentList);
                 } catch (Exception e) {
-                    //remember to add something when a command fails
+                    throw new CodeErrorException();
                 }
                 if(command instanceof ReturnCommand){
 //                    removeLastScope();

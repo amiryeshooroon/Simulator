@@ -1,5 +1,6 @@
 package Utilities.AutoPilot.Intepeter.Commands;
 
+import Exceptions.CodeErrorException;
 import Utilities.AutoPilot.Exceptions.ArgumentErrorException;
 import Utilities.AutoPilot.Intepeter.InterpterUtilities.StringToArgumentParser;
 import Utilities.AutoPilot.Intepeter.Parser;
@@ -23,7 +24,13 @@ public class LoopCommand implements Command {
         ConditionCommand conditionCommand = new ConditionCommand();
         String code = (String)args.get(2);
         Parser.getInstance().getLastScope().addInnerScope();
-        while(conditionCommand.checkCondition(asString)) Parser.getInstance().parse(code);
+        while(conditionCommand.checkCondition(asString)) {
+            try {
+                Parser.getInstance().parse(code);
+            } catch (CodeErrorException e) {
+                e.printStackTrace();
+            }
+        }
         Parser.getInstance().getLastScope().disposeInnerScope();
     }
 }

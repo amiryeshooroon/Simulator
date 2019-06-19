@@ -2,6 +2,7 @@ package ViewModel;
 
 
 import Exceptions.CantConnectToServerException;
+import Exceptions.CodeErrorException;
 import Utilities.AutoPilot.Intepeter.Parser;
 import Model.MySimulatorModel;
 import Utilities.Properties.CompositeProperty;
@@ -48,8 +49,14 @@ public class MainControllerViewModel extends Observable implements Observer {
     }
 
     public void sendToParser(){
-        simulatorModel.autoFly(autopilotText.get());
+        try {
+            simulatorModel.autoFly(autopilotText.get());
+        } catch (CodeErrorException e) {
+            setChanged();
+            notifyObservers(new CodeErrorException());
+        }
     }
+
     public void connectToSimulator(){
         try {
             simulatorModel.connect(ipPortText.get(), true);

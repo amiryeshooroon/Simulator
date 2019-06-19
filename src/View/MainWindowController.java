@@ -1,6 +1,7 @@
 package View;
 
 import Exceptions.CantConnectToServerException;
+import Exceptions.CodeErrorException;
 import Exceptions.WrongLimitError;
 import Intepeter.Parser;
 import ViewModel.MainControllerViewModel;
@@ -37,9 +38,12 @@ public class MainWindowController implements Initializable, Observer {
     private Slider rudderSlider;
     @FXML
     private Pane joystickPane;
+    @FXML
+    private Pane autoPilotPane;
     private MainControllerViewModel vm;
     private KeyCombination up, down, left, right;
     private Timer tUp, tDown, tLeft, tRight;
+
     public void setViewModel(MainControllerViewModel vm){
         this.vm = vm;
         vm.throttle.bind(throttleSlider.valueProperty());
@@ -60,6 +64,13 @@ public class MainWindowController implements Initializable, Observer {
             alert.setContentText("Please try to change your input and try again.");
             alert.showAndWait();
         }
+        else if(arg instanceof CodeErrorException){
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText("Code Error");
+            alert.setContentText("Could not run code. Please check for errors.");
+            alert.showAndWait();
+        }
     }
 
     @Override
@@ -69,6 +80,7 @@ public class MainWindowController implements Initializable, Observer {
         down = new KeyCodeCombination(KeyCode.S);
         left = new KeyCodeCombination(KeyCode.A);
         right = new KeyCodeCombination(KeyCode.D);
+        autoPilotPane.setPrefWidth(400);
     }
 
     public void onOpenFileClick(){
@@ -121,21 +133,34 @@ public class MainWindowController implements Initializable, Observer {
         if(right.match(keyEvent)) rudderSlider.setValue(rudderSlider.getValue()+0.05);
 
     }
-
+    public void loadScript(){
+        FileChooser fileChooser = new FileChooser();
+        File file = fileChooser.showOpenDialog(Main.stage);
+        if(file!=null){
+            StringBuilder sb = new StringBuilder();
+            try (Scanner scanner = new Scanner(new BufferedInputStream(new FileInputStream(file)))){
+                while (scanner.hasNextLine()) sb.append(scanner.nextLine()).append("\n");
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+            autoPilotCode.setText(sb.toString());
+        }
+    }
     public void engine(ActionEvent actionEvent) {
         vm.engine();
     }
 
     public void fly(ActionEvent actionEvent) {
+        vm.sendToParser();
     }
 
     public void selectManual(ActionEvent actionEvent) {
-        autoPilotCode.setDisable(true);
+        autoPilotPane.setDisable(true);
         joystickPane.setDisable(false);
     }
 
     public void selectAutoPilot(ActionEvent actionEvent) {
-        autoPilotCode.setDisable(false);
+        autoPilotPane.setDisable(false);
         joystickPane.setDisable(true);
     }
 }
