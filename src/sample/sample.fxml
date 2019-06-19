@@ -4,22 +4,18 @@
 <?import View.MapDisplayer?>
 
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.canvas.Canvas?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.Slider?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.ToggleGroup?>
-<?import javafx.scene.effect.Glow?>
-<?import javafx.scene.effect.Reflection?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 <VBox xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="View.MainWindowController">
     <children>
-        <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="372.0" prefWidth="1075.0" VBox.vgrow="ALWAYS">
+        <AnchorPane maxHeight="-1.0" maxWidth="-1.0" onKeyPressed="#keyPressedPane" prefHeight="372.0" prefWidth="1620.0" VBox.vgrow="ALWAYS">
             <children>
                 <Button layoutX="10.0" layoutY="9.0" mnemonicParsing="false" onAction="#onClickConnect" prefHeight="65.0" prefWidth="159.0" text="Connect">
                     <font>
@@ -33,7 +29,7 @@
                     <font>
                         <Font size="24.0" />
                     </font></Button>
-                <RadioButton layoutX="755.0" layoutY="27.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="132.0" text="Autopilot">
+                <RadioButton layoutX="662.0" layoutY="27.0" mnemonicParsing="false" onAction="#selectAutoPilot" prefHeight="30.0" prefWidth="132.0" text="Autopilot">
                     <font>
                         <Font size="20.0" />
                     </font>
@@ -41,54 +37,50 @@
                         <ToggleGroup fx:id="group" />
                     </toggleGroup>
                 </RadioButton>
-                <RadioButton layoutX="930.0" layoutY="27.0" mnemonicParsing="false" prefHeight="20.0" prefWidth="117.0" selected="true" text="Manual" toggleGroup="$group">
+                <RadioButton layoutX="1010.0" layoutY="29.0" mnemonicParsing="false" onAction="#selectManual" prefHeight="20.0" prefWidth="117.0" selected="true" text="Manual" toggleGroup="$group">
                     <font>
                         <Font size="20.0" />
                     </font>
                 </RadioButton>
-                <Label layoutX="954.0" layoutY="76.0" prefHeight="24.0" prefWidth="99.0" text="⇦ aileron ⇨" textAlignment="CENTER">
-               <font>
-                  <Font size="19.0" />
-               </font></Label>
-                <MapDisplayer fx:id="mapDisplayer" height="282.0" layoutX="10.0" layoutY="90.0" width="594.0" onMouseClicked="#clickOnMap"/>
-                <TextArea fx:id="autoPilotCode" layoutX="632.0" layoutY="74.0" prefHeight="296.0" prefWidth="214.0" />
-                <Slider fx:id="rudderSlider" layoutX="926.0" layoutY="265.0" max="1" min="-1" majorTickUnit="0.1" showTickLabels="true" />
-                <Slider fx:id="throttleSlider" layoutX="887.0" layoutY="100.0" max="1" min="-1" majorTickUnit="0.1" orientation="VERTICAL" showTickLabels="true">
-               <effect>
-                  <Glow>
-                     <input>
-                        <Reflection />
-                     </input>
-                  </Glow>
-               </effect></Slider>
-                <JoyStick fx:id="joyStick" layoutX="930.0" layoutY="108.0" prefHeight="140.0" prefWidth="132.0" bigCircleColor="#0000FF" smallCircleColor="#FF0000" />
-<!--                <Region fx:id="joyStick" layoutX="930.0" layoutY="108.0" prefHeight="140.0" prefWidth="132.0" />-->
-                <RadioButton layoutX="632.0" layoutY="27.0" mnemonicParsing="false" text="Map Fly" toggleGroup="$group">
-               <font>
-                  <Font size="20.0" />
-               </font>
-            </RadioButton>
-            <Label fx:id="myLabel" layoutX="1045.0" layoutY="164.0" rotate="90" text="⇦ Elevator ⇨">
-               <font>
-                  <Font size="19.0" />
-               </font>
-               <opaqueInsets>
-                  <Insets />
-               </opaqueInsets>
-            </Label>
-            <Label layoutX="842.0" layoutY="156.0" rotate="90" text="throttle">
-               <font>
-                  <Font size="19.0" />
-               </font>
-               <opaqueInsets>
-                  <Insets />
-               </opaqueInsets>
-            </Label>
-            <Label layoutX="954.0" layoutY="330.0" prefHeight="24.0" prefWidth="99.0" text="rudder" textAlignment="CENTER">
-               <font>
-                  <Font size="19.0" />
-               </font>
-            </Label>
+                <MapDisplayer fx:id="mapDisplayer" height="282.0" layoutX="10.0" layoutY="90.0" onMouseClicked="#clickOnMap" width="594.0" />
+                <TextArea fx:id="autoPilotCode" layoutX="632.0" layoutY="74.0" prefHeight="296.0" prefWidth="214.0" disable="true"/>
+            <AnchorPane fx:id="joystickPane" layoutX="897.0" layoutY="57.0" prefHeight="296.0" prefWidth="406.0">
+               <children>
+                      <Label layoutX="163.0" layoutY="33.0" prefHeight="24.0" prefWidth="99.0" text="⇦ aileron ⇨" textAlignment="CENTER">
+                     <font>
+                        <Font size="19.0" />
+                     </font>
+                  </Label>
+                      <Slider fx:id="rudderSlider" layoutX="135.0" layoutY="222.0" majorTickUnit="0.5" max="1" min="-1" showTickLabels="true" />
+                      <Slider fx:id="throttleSlider" layoutX="96.0" layoutY="57.0" majorTickUnit="0.5" max="1" min="-1" orientation="VERTICAL" showTickLabels="true" />
+                      <JoyStick fx:id="joyStick" layoutX="139.0" layoutY="65.0" prefHeight="140.0" prefWidth="132.0" bigCircleColor="#847777" smallCircleColor="#685453" />
+<!--                      <Region fx:id="joyStick" layoutX="139.0" layoutY="65.0" prefHeight="140.0" prefWidth="132.0" />-->
+                  <Label layoutX="163.0" layoutY="268.0" prefHeight="24.0" prefWidth="99.0" text="rudder" textAlignment="CENTER">
+                     <font>
+                        <Font size="19.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="myLabel" layoutX="240.0" layoutY="113.0" rotate="90" text="⇦ Elevator ⇨">
+                     <font>
+                        <Font size="19.0" />
+                     </font>
+                     <opaqueInsets>
+                        <Insets />
+                     </opaqueInsets>
+                  </Label>
+                  <Label layoutX="51.0" layoutY="113.0" rotate="90" text="throttle">
+                     <font>
+                        <Font size="19.0" />
+                     </font>
+                     <opaqueInsets>
+                        <Insets />
+                     </opaqueInsets>
+                  </Label>
+               </children>
+            </AnchorPane>
+            <Button fx:id="engineBtn" layoutX="1220.0" layoutY="90.0" mnemonicParsing="false" onAction="#engine" prefHeight="65.0" prefWidth="132.0" text="Engine" />
+                <Button fx:id="flyBtn" layoutX="1220.0" layoutY="180.0" mnemonicParsing="false" onAction="#fly" prefHeight="65.0" prefWidth="132.0" text="Fly!" />
+
             </children>
         </AnchorPane>
     </children>

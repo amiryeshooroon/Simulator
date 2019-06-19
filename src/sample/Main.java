@@ -16,19 +16,23 @@ public class Main extends Application {
     public static Stage stage;
     @Override
     public void start(Stage primaryStage) throws Exception{
-        stage = primaryStage;
-        MySimulatorModel m = new MySimulatorModel();
-        MainControllerViewModel vm = new MainControllerViewModel();
-        m.addObserver(vm);
-        FXMLLoader fxl = new FXMLLoader();
-        Parent root = fxl.load(getClass().getResource("sample.fxml").openStream());
-        //Parent root = FXMLLoader.load(getClass().getResource("sample.fxml"));
-        MainWindowController mwc = fxl.getController();
-        vm.addObserver(mwc);
-        mwc.setViewModel(vm);
-        primaryStage.setTitle("Simulator");
-        primaryStage.setScene(new Scene(root, 1175, 375));
-        primaryStage.show();
+        try {
+            stage = primaryStage;
+            MySimulatorModel m = new MySimulatorModel();
+            MainControllerViewModel vm = new MainControllerViewModel();
+            m.addObserver(vm);
+            FXMLLoader fxl = new FXMLLoader();
+            Parent root = fxl.load(getClass().getResource("sample.fxml").openStream());
+            //Parent root = FXMLLoader.load(getClass().getResource("sample.fxml"));
+            MainWindowController mwc = fxl.getController();
+            vm.addObserver(mwc);
+            mwc.setViewModel(vm);
+            primaryStage.setTitle("Simulator");
+            primaryStage.setScene(new Scene(root, 1375, 375));
+            primaryStage.show();
+        }catch (Exception e){
+            System.out.println(e.toString());
+        }
     }
 
 

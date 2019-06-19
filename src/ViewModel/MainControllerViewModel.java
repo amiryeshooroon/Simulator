@@ -2,7 +2,7 @@ package ViewModel;
 
 
 import Exceptions.CantConnectToServerException;
-import Intepeter.Parser;
+import Utilities.AutoPilot.Intepeter.Parser;
 import Model.MySimulatorModel;
 import Utilities.Properties.CompositeProperty;
 import javafx.beans.property.DoubleProperty;
@@ -67,7 +67,9 @@ public class MainControllerViewModel extends Observable implements Observer {
             //can do connected if success like simulatorModel notifies viewModel and it notifies view and popup connected
         }
     }
-
+    public void engine(){
+        simulatorModel.engine();
+    }
     @Override
     public void update(java.util.Observable o, Object arg) {
 

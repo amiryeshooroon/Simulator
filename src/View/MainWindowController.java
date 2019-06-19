@@ -9,11 +9,12 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
-import javafx.scene.input.DragEvent;
-import javafx.scene.input.MouseEvent;
+import javafx.scene.input.*;
+import javafx.scene.layout.Pane;
 import javafx.stage.FileChooser;
 import sample.Main;
 
@@ -25,17 +26,20 @@ import java.util.stream.Collectors;
 
 public class MainWindowController implements Initializable, Observer {
     @FXML
-    MapDisplayer mapDisplayer;
+    private MapDisplayer mapDisplayer;
     @FXML
-    JoyStick joyStick;
+    private JoyStick joyStick;
     @FXML
-    TextArea autoPilotCode;
+    private TextArea autoPilotCode;
     @FXML
-    Slider throttleSlider;
+    private Slider throttleSlider;
     @FXML
-    Slider rudderSlider;
-    MainControllerViewModel vm;
-
+    private Slider rudderSlider;
+    @FXML
+    private Pane joystickPane;
+    private MainControllerViewModel vm;
+    private KeyCombination up, down, left, right;
+    private Timer tUp, tDown, tLeft, tRight;
     public void setViewModel(MainControllerViewModel vm){
         this.vm = vm;
         vm.throttle.bind(throttleSlider.valueProperty());
@@ -61,6 +65,10 @@ public class MainWindowController implements Initializable, Observer {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         joyStick.displayJoystick();
+        up = new KeyCodeCombination(KeyCode.W);
+        down = new KeyCodeCombination(KeyCode.S);
+        left = new KeyCodeCombination(KeyCode.A);
+        right = new KeyCodeCombination(KeyCode.D);
     }
 
     public void onOpenFileClick(){
@@ -103,5 +111,31 @@ public class MainWindowController implements Initializable, Observer {
     }
 
     public void clickOnMap(MouseEvent mouseEvent) {
+        System.out.println("("+mouseEvent.getX()+","+mouseEvent.getY()+")");
+    }
+
+    public void keyPressedPane(KeyEvent keyEvent) {
+        if(up.match(keyEvent)) throttleSlider.setValue(throttleSlider.getValue()+0.05);
+        if(down.match(keyEvent)) throttleSlider.setValue(throttleSlider.getValue()-0.05);
+        if(left.match(keyEvent)) rudderSlider.setValue(rudderSlider.getValue()-0.05);
+        if(right.match(keyEvent)) rudderSlider.setValue(rudderSlider.getValue()+0.05);
+
+    }
+
+    public void engine(ActionEvent actionEvent) {
+        vm.engine();
+    }
+
+    public void fly(ActionEvent actionEvent) {
+    }
+
+    public void selectManual(ActionEvent actionEvent) {
+        autoPilotCode.setDisable(true);
+        joystickPane.setDisable(false);
+    }
+
+    public void selectAutoPilot(ActionEvent actionEvent) {
+        autoPilotCode.setDisable(false);
+        joystickPane.setDisable(true);
     }
 }
