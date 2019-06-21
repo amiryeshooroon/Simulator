@@ -183,6 +183,7 @@ public class MainWindowController implements Initializable, Observer {
     }
 
     public void planeMover(){
+        //need to test
         timer = new AnimationTimer() {
             @Override
             public void handle(long now) {
