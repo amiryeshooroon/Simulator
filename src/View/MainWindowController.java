@@ -7,6 +7,7 @@ import Intepeter.Parser;
 import Utilities.Properties.CompositeProperty;
 import Utilities.Properties.MyProperty;
 import ViewModel.MainControllerViewModel;
+import javafx.animation.AnimationTimer;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
@@ -46,6 +47,8 @@ public class MainWindowController implements Initializable, Observer {
     private MainControllerViewModel vm;
     private CompositeProperty<Double> clickOnMapLocation;
     private MyProperty<Double> x,y;
+    private AnimationTimer timer;
+
     public void setViewModel(MainControllerViewModel vm){
         this.vm = vm;
         vm.throttle.bind(throttleSlider.valueProperty());
@@ -53,8 +56,7 @@ public class MainWindowController implements Initializable, Observer {
         Platform.runLater(()-> {
             try {
                 vm.joyStick.bind(joyStick.getProperty());
-            } catch (WrongLimitError wrongLimitError) {
-            }
+            } catch (WrongLimitError ignored) {}
         });
     }
     @Override
@@ -84,7 +86,7 @@ public class MainWindowController implements Initializable, Observer {
         y = new MyProperty<>();
         try {
             clickOnMapLocation.bind(new Pair<String, MyProperty<Double>>("x", x), new Pair<String, MyProperty<Double>>("y", y));
-        } catch (WrongLimitError wrongLimitError) {
+        } catch (WrongLimitError ignored) {
         }
     }
 
@@ -109,11 +111,11 @@ public class MainWindowController implements Initializable, Observer {
                         i++;
                     }
                     else if(i == 1){
-                        area = Double.valueOf(str);
+                        area = new Scanner(str).useDelimiter(",").nextDouble();
                         i++;
                     }
                 }
-            } catch (FileNotFoundException e) {}
+            } catch (FileNotFoundException ignored) {}
             mapDisplayer.displayMap(records, longtitude, latitude, area);
         }
     }
@@ -146,8 +148,8 @@ public class MainWindowController implements Initializable, Observer {
 
     public void keyPressedPane(KeyEvent keyEvent) {
 
-
     }
+
     public void loadScript(){
         FileChooser fileChooser = new FileChooser();
         File file = fileChooser.showOpenDialog(Main.stage);
@@ -161,6 +163,7 @@ public class MainWindowController implements Initializable, Observer {
             autoPilotCode.setText(sb.toString());
         }
     }
+
     public void engine(ActionEvent actionEvent) {
         vm.engine();
     }
@@ -177,5 +180,22 @@ public class MainWindowController implements Initializable, Observer {
     public void selectAutoPilot(ActionEvent actionEvent) {
         autoPilotPane.setDisable(false);
         joystickPane.setDisable(true);
+    }
+
+    public void planeMover(){
+        timer = new AnimationTimer() {
+            @Override
+            public void handle(long now) {
+                mapDisplayer.displayAirplane(vm.planeLong(), vm.planeLat());
+                try {
+                    Thread.sleep(250);
+                } catch (InterruptedException ignored) {}
+            }
+        };
+        timer.start();
+    }
+
+    public void stopPlaneMoving(){
+        timer.stop();
     }
 }

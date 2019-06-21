@@ -9,14 +9,17 @@ import Utilities.ServersUtilities.SolverCommunicator;
 
 import java.util.List;
 import java.util.Observable;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class MySimulatorModel extends Observable implements SimulatorModel {
-    private double airplaneX;
-    private double airplaneY;
     private String ip;
     private int port;
     private String path;
     private SolverCommunicator solver;
+    private boolean stop;
+    private AtomicReference<Double> longitude;
+    private AtomicReference<Double> latitude;
 
     public MySimulatorModel() {
         solver = new SolverCommunicator();
@@ -118,7 +121,31 @@ public class MySimulatorModel extends Observable implements SimulatorModel {
         } catch (NotConnectedToServerException e) {
             //e.printStackTrace();
         }
-
-
+    }
+    public void startPosotionsThread(){
+        stop = false;
+        latitude = new AtomicReference<>();
+        longitude = new AtomicReference<>();
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                while(!stop){
+                    try {
+                        longitude.set(SimulatorServer.getServer().getVariable("position/longitude-deg"));
+                        latitude.set(SimulatorServer.getServer().getVariable("position/latitude-deg"));
+                        Thread.sleep(250);
+                    } catch (NotConnectedToServerException | InterruptedException e) {}
+                }
+            }
+        }).start();
+    }
+    public void stopPositionsThread(){
+        stop = true;
+    }
+    public double getLatitude(){
+        return latitude.get();
+    }
+    public double getLongitude(){
+        return longitude.get();
     }
 }

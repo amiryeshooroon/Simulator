@@ -1,9 +1,13 @@
 package View;
 
 import Utilities.Math.ColoredRange;
+import javafx.animation.AnimationTimer;
+import javafx.animation.Timeline;
+import javafx.scene.SnapshotParameters;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
+import javafx.scene.image.WritableImage;
 import javafx.scene.paint.Color;
 
 import java.util.ArrayList;
@@ -12,7 +16,6 @@ import java.util.List;
 
 public class MapDisplayer extends Canvas {
     private List<List<Double>> map;
-    private List<String> colors;
     private double maxHighet, minHighet;
     private double canvasWidth;
     private double canvasHighet;
@@ -22,19 +25,23 @@ public class MapDisplayer extends Canvas {
     private Image plane;
     private double prevPlaneX, prevPlaneY;
     private double prevXX, prevXY;
-    private double longitude, latitude, area;
-    GraphicsContext gc;
+    private double startLongitude, startLatitude, area;
+    private AnimationTimer timer;
+    private GraphicsContext gc;
+
     public void displayMap(List<List<Double>> newMap, double longitude, double latitude, double area){
         map = newMap;
         gc = null;
         prevXX = 0;
         prevXY = 0;
         xPhoto = new Image(getClass().getResource("Xphoto.png").toString());
-        this.longitude = longitude;
-        this.latitude = latitude;
+        plane = new Image(getClass().getResource("plane.png").toString());
+        startLongitude = longitude;
+        startLatitude = latitude;
         this.area = area;
         calculateMinMax(); //
         redraw();
+
     }
 
     private void calculateMinMax(){
@@ -72,5 +79,9 @@ public class MapDisplayer extends Canvas {
             prevXX = x;
             prevXY = y;
         }
+    }
+    public void displayAirplane(double longitude , double latitude){
+        gc.drawImage(plane, (((latitude - startLatitude - area)/ area))*cellWidth,
+                (((longitude - startLongitude - area)/area))*cellHighet, plane.getWidth(), plane.getHeight());
     }
 }

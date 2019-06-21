@@ -83,4 +83,12 @@ public class MainControllerViewModel extends Observable implements Observer {
     public void update(java.util.Observable o, Object arg) {
 
     }
+
+    public double planeLong(){
+        return simulatorModel.getLongitude();
+    }
+
+    public double planeLat(){
+        return simulatorModel.getLatitude();
+    }
 }
