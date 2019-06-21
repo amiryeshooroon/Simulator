@@ -33,7 +33,7 @@ public class MapDisplayer extends Canvas {
         this.longitude = longitude;
         this.latitude = latitude;
         this.area = area;
-        calculateMinMax();
+        calculateMinMax(); //
         redraw();
     }
 
