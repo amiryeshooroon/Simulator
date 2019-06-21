@@ -89,6 +89,7 @@ public class MainWindowController implements Initializable, Observer {
     }
 
     public void onOpenFileClick(){
+        double longtitude = 0, latitude = 0, area = 0;
         FileChooser fileChooser = new FileChooser();
         File file = fileChooser.showOpenDialog(Main.stage);
         if(file!=null){
@@ -97,14 +98,23 @@ public class MainWindowController implements Initializable, Observer {
             try (Scanner scanner = new Scanner(new BufferedInputStream(new FileInputStream(file)))) {
                 while (scanner.hasNextLine()) {
                     String str = scanner.nextLine();
-                    if(i==0 || i==1) {
-                        i++; continue;
+                    if(i >= 2){
+                        records.add(Arrays.stream(str.split(",")).map(Double::valueOf).collect(Collectors.toList()));
+                        i++;
                     }
-                    records.add(Arrays.stream(str.split(",")).map(Double::valueOf).collect(Collectors.toList()));
-                    i++;
+                    else if(i==0) {
+                        List<Double> numbers = Arrays.stream(str.split(",")).map(Double::valueOf).collect(Collectors.toList());
+                        longtitude = numbers.get(0);
+                        latitude = numbers.get(1);
+                        i++;
+                    }
+                    else if(i == 1){
+                        area = Double.valueOf(str);
+                        i++;
+                    }
                 }
             } catch (FileNotFoundException e) {}
-            mapDisplayer.displayMap(records);
+            mapDisplayer.displayMap(records, longtitude, latitude, area);
         }
     }
 
