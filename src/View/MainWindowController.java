@@ -109,7 +109,7 @@ public class MainWindowController implements Initializable, Observer {
                         i++;
                     }
                     else if(i == 1){
-                        area = Double.valueOf(str);
+                        area = Double.valueOf(str.split(",")[0]);
                         i++;
                     }
                 }

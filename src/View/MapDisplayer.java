@@ -1,6 +1,8 @@
 package View;
 
+import Utilities.AutoPilot.Exceptions.NotConnectedToServerException;
 import Utilities.Math.ColoredRange;
+import Utilities.ServersUtilities.SimulatorServer;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
@@ -23,6 +25,7 @@ public class MapDisplayer extends Canvas {
     private double prevPlaneX, prevPlaneY;
     private double prevXX, prevXY;
     private double longitude, latitude, area;
+    private volatile boolean stop;
     GraphicsContext gc;
     public void displayMap(List<List<Double>> newMap, double longitude, double latitude, double area){
         map = newMap;
@@ -30,11 +33,23 @@ public class MapDisplayer extends Canvas {
         prevXX = 0;
         prevXY = 0;
         xPhoto = new Image(getClass().getResource("Xphoto.png").toString());
+        plane = new Image(getClass().getResource("plane.png").toString());
         this.longitude = longitude;
         this.latitude = latitude;
         this.area = area;
         calculateMinMax(); //
         redraw();
+        prevPlaneX = 0;
+        prevPlaneY = 0;
+        stop = false;
+        new Thread(()->{
+            while(!stop) {
+                try {
+                    drawPlane(SimulatorServer.getServer().getVariable("/position/longitude-deg"), SimulatorServer.getServer().getVariable("/position/latitude-deg"));
+                } catch (NotConnectedToServerException e) {
+                }
+            }
+        }).start();
     }
 
     private void calculateMinMax(){
@@ -72,5 +87,18 @@ public class MapDisplayer extends Canvas {
             prevXX = x;
             prevXY = y;
         }
+    }
+    public void drawPlane(double x, double y){
+        if(gc != null) {
+            redrawAt((int)(prevPlaneY/cellHighet), (int)(prevPlaneX / cellWidth));
+            gc.drawImage(plane, ((int)((x-longitude) / area))*cellWidth, ((int)((y-latitude)/area))*cellHighet, cellWidth, cellHighet);
+            prevPlaneX = x;
+            prevPlaneY = y;
+        }
+    }
+
+    @Override
+    protected void finalize() throws Throwable {
+        stop = true;
     }
 }
