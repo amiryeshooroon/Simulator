@@ -16,7 +16,6 @@ public class Main extends Application {
     public static Stage stage;
     @Override
     public void start(Stage primaryStage) throws Exception{
-        try {
             stage = primaryStage;
             MySimulatorModel m = new MySimulatorModel();
             MainControllerViewModel vm = new MainControllerViewModel();
@@ -30,9 +29,6 @@ public class Main extends Application {
             primaryStage.setTitle("Simulator");
             primaryStage.setScene(new Scene(root, 1150, 375));
             primaryStage.show();
-        }catch (Exception e){
-            System.out.println(e.toString());
-        }
     }
 
 

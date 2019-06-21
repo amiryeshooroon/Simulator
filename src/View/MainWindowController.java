@@ -80,6 +80,8 @@ public class MainWindowController implements Initializable, Observer {
         joyStick.displayJoystick();
         autoPilotPane.setPrefWidth(400);
         clickOnMapLocation = new CompositeProperty<>(2);
+        x = new MyProperty<>();
+        y = new MyProperty<>();
         try {
             clickOnMapLocation.bind(new Pair<String, MyProperty<Double>>("x", x), new Pair<String, MyProperty<Double>>("y", y));
         } catch (WrongLimitError wrongLimitError) {
