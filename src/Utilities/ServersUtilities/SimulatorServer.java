@@ -8,9 +8,10 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.util.Scanner;
 
 public class SimulatorServer {
-    private BufferedReader in;
+    private Scanner in;
     private PrintWriter out;
     private Socket socket;
     private SimulatorServer() {}
@@ -24,7 +25,7 @@ public class SimulatorServer {
 
     public void open(String ip, int port) throws IOException {
         socket = new Socket(ip, port);
-        in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+        in = new Scanner(new BufferedReader(new InputStreamReader(socket.getInputStream())));
         out = new PrintWriter(socket.getOutputStream());
     }
     public void stop(){
@@ -39,18 +40,37 @@ public class SimulatorServer {
         out.println("set " + varPath + " " + value);
         out.flush();
     }
+    public void setVariable(String varPath, boolean value) throws NotConnectedToServerException{
+        if(socket == null) throw new NotConnectedToServerException("You might want to check if there is a connect command");
+        out.println("set " + varPath + " " + value);
+        out.flush();
+    }
     public double getVariable(String varPath) throws NotConnectedToServerException{
         if(socket == null) throw new NotConnectedToServerException("You might want to check if there is a connect command");
         out.println("get " + varPath);
         out.flush();
-        try {
-            return Double.valueOf(in.readLine());
-        } catch (IOException e) {}
-        return 0;
+            in.next();
+            in.next();
+            String s = in.next();
+            s = s.replace("\'","");
+            return Double.valueOf(s);
     }
     public void sendString(String str) throws NotConnectedToServerException{
         if(socket == null) throw new NotConnectedToServerException("You might want to check if there is a connect command");
         out.println(str);
         out.flush();
+    }
+    public static void main(String... args){
+        SimulatorServer server = getServer();
+        try {
+            server.open("127.0.0.1", 5402);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            System.out.println(server.getVariable("/position/longitude-deg"));
+        } catch (NotConnectedToServerException e) {
+            e.printStackTrace();
+        }
     }
 }

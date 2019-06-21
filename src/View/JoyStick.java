@@ -43,7 +43,7 @@ public class JoyStick extends Pane {
                 wrongLimitError.printStackTrace();
             }
             smallCircle.setOnMouseDragged(event->{
-                if(t != null){
+                if(t != null && t.getT() != null){
                     t.getT().cancel();
                 }
                 if(Math.hypot(Math.abs(event.getX() - bigCircle.getCenterX()), Math.abs(event.getY() - bigCircle.getCenterY())) > bigCircle.getRadius()){

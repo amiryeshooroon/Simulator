@@ -4,6 +4,8 @@ import Exceptions.CantConnectToServerException;
 import Exceptions.CodeErrorException;
 import Exceptions.WrongLimitError;
 import Intepeter.Parser;
+import Utilities.Properties.CompositeProperty;
+import Utilities.Properties.MyProperty;
 import ViewModel.MainControllerViewModel;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
@@ -17,6 +19,7 @@ import javafx.scene.control.*;
 import javafx.scene.input.*;
 import javafx.scene.layout.Pane;
 import javafx.stage.FileChooser;
+import javafx.util.Pair;
 import sample.Main;
 
 import java.io.*;
@@ -41,9 +44,8 @@ public class MainWindowController implements Initializable, Observer {
     @FXML
     private Pane autoPilotPane;
     private MainControllerViewModel vm;
-    private KeyCombination up, down, left, right;
-    private Timer tUp, tDown, tLeft, tRight;
-
+    private CompositeProperty<Double> clickOnMapLocation;
+    private MyProperty<Double> x,y;
     public void setViewModel(MainControllerViewModel vm){
         this.vm = vm;
         vm.throttle.bind(throttleSlider.valueProperty());
@@ -76,11 +78,12 @@ public class MainWindowController implements Initializable, Observer {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         joyStick.displayJoystick();
-        up = new KeyCodeCombination(KeyCode.W);
-        down = new KeyCodeCombination(KeyCode.S);
-        left = new KeyCodeCombination(KeyCode.A);
-        right = new KeyCodeCombination(KeyCode.D);
         autoPilotPane.setPrefWidth(400);
+        clickOnMapLocation = new CompositeProperty<>(2);
+        try {
+            clickOnMapLocation.bind(new Pair<String, MyProperty<Double>>("x", x), new Pair<String, MyProperty<Double>>("y", y));
+        } catch (WrongLimitError wrongLimitError) {
+        }
     }
 
     public void onOpenFileClick(){
@@ -124,13 +127,13 @@ public class MainWindowController implements Initializable, Observer {
 
     public void clickOnMap(MouseEvent mouseEvent) {
         System.out.println("("+mouseEvent.getX()+","+mouseEvent.getY()+")");
+        x.set(mouseEvent.getX());
+        y.set(mouseEvent.getY());
+        mapDisplayer.drawX(mouseEvent.getX(), mouseEvent.getY());
     }
 
     public void keyPressedPane(KeyEvent keyEvent) {
-        if(up.match(keyEvent)) throttleSlider.setValue(throttleSlider.getValue()+0.05);
-        if(down.match(keyEvent)) throttleSlider.setValue(throttleSlider.getValue()-0.05);
-        if(left.match(keyEvent)) rudderSlider.setValue(rudderSlider.getValue()-0.05);
-        if(right.match(keyEvent)) rudderSlider.setValue(rudderSlider.getValue()+0.05);
+
 
     }
     public void loadScript(){

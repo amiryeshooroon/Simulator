@@ -26,6 +26,7 @@ public class MainControllerViewModel extends Observable implements Observer {
     public StringProperty ipPortText;
     public DoubleProperty throttle, rudder;
     public CompositeProperty<Double> joyStick;
+    public CompositeProperty<Double> clickOnMapLocation;
     public MainControllerViewModel(){
         simulatorModel = new MySimulatorModel();
         autopilotText = new SimpleStringProperty();
@@ -46,6 +47,7 @@ public class MainControllerViewModel extends Observable implements Observer {
         rudder.addListener(
                 (observable, oldValue, newValue) -> simulatorModel.setRudder(newValue.doubleValue())
         );
+        clickOnMapLocation = new CompositeProperty<>(2);
     }
 
     public void sendToParser(){

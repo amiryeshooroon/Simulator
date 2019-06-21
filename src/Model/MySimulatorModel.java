@@ -114,7 +114,7 @@ public class MySimulatorModel extends Observable implements SimulatorModel {
     public void engine(){
         try {
             SimulatorServer.getServer().setVariable("/controls/engines/engine/magnetos", 3);
-            SimulatorServer.getServer().setVariable("/controls/switches/starter", 1);
+            SimulatorServer.getServer().setVariable("/controls/switches/starter", true);
         } catch (NotConnectedToServerException e) {
             //e.printStackTrace();
         }
