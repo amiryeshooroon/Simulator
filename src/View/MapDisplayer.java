@@ -81,7 +81,10 @@ public class MapDisplayer extends Canvas {
         }
     }
     public void displayAirplane(double longitude , double latitude){
-        gc.drawImage(plane, (((latitude - startLatitude - area)/ area))*cellWidth,
-                (((longitude - startLongitude - area)/area))*cellHighet, plane.getWidth(), plane.getHeight());
+        double x = (((latitude - startLatitude + area)/ area))*cellWidth;
+        double y = (((longitude - startLongitude + area)/area))*cellHighet;
+        System.out.println("Before calculation: (" + longitude + ", " + latitude + ")");
+        System.out.println("After calculation: (" + x + ", " + y + ")");
+        gc.drawImage(plane, x, y, plane.getWidth(), plane.getHeight());
     }
 }

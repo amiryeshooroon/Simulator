@@ -59,20 +59,24 @@ public class MainControllerViewModel extends Observable implements Observer {
         }
     }
 
-    public void connectToSimulator(){
+    public boolean connectToSimulator(){
         try {
             simulatorModel.connect(ipPortText.get(), true);
+            return true;
         } catch (Exception e) {
             setChanged();
             notifyObservers(new CantConnectToServerException());
+            return false;
         }
     }
-    public void connectToSolver(){
+    public boolean connectToSolver(){
         try {
             simulatorModel.connect(ipPortText.get(), false);
+            return true;
         } catch (Exception e) {
             setChanged();
             notifyObservers(new CantConnectToServerException());
+            return false;
             //can do connected if success like simulatorModel notifies viewModel and it notifies view and popup connected
         }
     }
@@ -90,5 +94,15 @@ public class MainControllerViewModel extends Observable implements Observer {
 
     public double planeLat(){
         return simulatorModel.getLatitude();
+    }
+
+    public void startPositionThread(){
+        Object obj = new Object();
+        simulatorModel.startPosotionsThread(obj);
+        synchronized (obj) {
+            try {
+                obj.wait();
+            } catch (InterruptedException e){}
+        }
     }
 }

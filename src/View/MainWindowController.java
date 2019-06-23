@@ -48,6 +48,7 @@ public class MainWindowController implements Initializable, Observer {
     private CompositeProperty<Double> clickOnMapLocation;
     private MyProperty<Double> x,y;
     private AnimationTimer timer;
+    private boolean isMapLoaded, isConnectedToSimulator;
 
     public void setViewModel(MainControllerViewModel vm){
         this.vm = vm;
@@ -84,6 +85,8 @@ public class MainWindowController implements Initializable, Observer {
         clickOnMapLocation = new CompositeProperty<>(2);
         x = new MyProperty<>();
         y = new MyProperty<>();
+        isMapLoaded = false;
+        isConnectedToSimulator = false;
         try {
             clickOnMapLocation.bind(new Pair<String, MyProperty<Double>>("x", x), new Pair<String, MyProperty<Double>>("y", y));
         } catch (WrongLimitError ignored) {
@@ -117,26 +120,36 @@ public class MainWindowController implements Initializable, Observer {
                 }
             } catch (FileNotFoundException ignored) {}
             mapDisplayer.displayMap(records, longtitude, latitude, area);
+            isMapLoaded = true;
+            if(isConnectedToSimulator) planeMover();
         }
     }
 
     public void onClickConnect(){
-        connector(true);
+        boolean succeed = connector(true);
+        if(succeed) {
+            isConnectedToSimulator = true;
+            if(isMapLoaded) planeMover();
+        }
+
     }
     public void onClickCalculatePath(){
         connector(false);
     }
 
-    private void connector(boolean flag){
+    private boolean connector(boolean flag){
         TextInputDialog dialog = new TextInputDialog("");
         if(vm != null) vm.ipPortText.bind(dialog.getEditor().textProperty());
         dialog.setTitle("Connect");
         dialog.setContentText("IP:Port");
         Optional<String> result = dialog.showAndWait();
-
-        if(vm != null)
-            if(flag) vm.connectToSimulator();
-            else vm.connectToSolver();
+        boolean succeed = false;
+        if(vm != null) {
+            if (flag) succeed = vm.connectToSimulator();
+            else succeed = vm.connectToSolver();
+            return succeed;
+        }
+        return false;
     }
 
     public void clickOnMap(MouseEvent mouseEvent) {
@@ -183,6 +196,11 @@ public class MainWindowController implements Initializable, Observer {
     }
 
     public void planeMover(){
+        vm.startPositionThread();
+        try {
+            Thread.sleep(20);
+        } catch (InterruptedException e) {
+        }
         //need to test
         timer = new AnimationTimer() {
             @Override
@@ -198,5 +216,9 @@ public class MainWindowController implements Initializable, Observer {
 
     public void stopPlaneMoving(){
         timer.stop();
+    }
+
+    public void finalize(){
+        stopPlaneMoving();
     }
 }

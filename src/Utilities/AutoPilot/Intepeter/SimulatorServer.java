@@ -44,7 +44,8 @@ public class SimulatorServer {
         out.println("get " + varPath);
         out.flush();
         try {
-            return Double.valueOf(in.readLine());
+            String str = in.readLine();
+            return Double.valueOf(str);
         } catch (IOException e) {}
         return 0;
     }

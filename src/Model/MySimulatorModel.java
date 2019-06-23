@@ -122,17 +122,26 @@ public class MySimulatorModel extends Observable implements SimulatorModel {
             //e.printStackTrace();
         }
     }
-    public void startPosotionsThread(){
+    public void startPosotionsThread(Object obj){
         stop = false;
         latitude = new AtomicReference<>();
         longitude = new AtomicReference<>();
         new Thread(new Runnable() {
             @Override
             public void run() {
+                boolean sentOnce = false;
                 while(!stop){
                     try {
                         longitude.set(SimulatorServer.getServer().getVariable("position/longitude-deg"));
+                        System.out.println("longitue: " + longitude);
                         latitude.set(SimulatorServer.getServer().getVariable("position/latitude-deg"));
+                        System.out.println("latitude: " + latitude);
+                        if(!sentOnce){
+                            synchronized (obj){
+                                obj.notifyAll();
+                            }
+                            sentOnce = true;
+                        }
                         Thread.sleep(250);
                     } catch (NotConnectedToServerException | InterruptedException e) {}
                 }

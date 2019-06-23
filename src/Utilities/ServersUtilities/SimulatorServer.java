@@ -39,6 +39,7 @@ public class SimulatorServer {
         if(socket == null) throw new NotConnectedToServerException("You might want to check if there is a connect command");
         out.println("set " + varPath + " " + value);
         out.flush();
+        in.nextLine();
     }
     public void setVariable(String varPath, boolean value) throws NotConnectedToServerException{
         if(socket == null) throw new NotConnectedToServerException("You might want to check if there is a connect command");
@@ -49,11 +50,18 @@ public class SimulatorServer {
         if(socket == null) throw new NotConnectedToServerException("You might want to check if there is a connect command");
         out.println("get " + varPath);
         out.flush();
-            in.next();
-            in.next();
-            String s = in.next();
-            s = s.replace("\'","");
-            return Double.valueOf(s);
+        double val = 0;
+        String str = in.nextLine();
+        Scanner in1 = new Scanner(str);
+        System.out.println("str: " + str);
+        in1.useDelimiter("'| ");
+        while(in1.hasNext()){
+            if(in1.hasNextDouble()) val = in1.nextDouble();
+            if(in1.hasNext()) in1.next();
+            else break;
+        }
+        System.out.println("val: " + val);
+        return val;
     }
     public void sendString(String str) throws NotConnectedToServerException{
         if(socket == null) throw new NotConnectedToServerException("You might want to check if there is a connect command");
