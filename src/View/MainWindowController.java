@@ -54,6 +54,7 @@ public class MainWindowController implements Initializable, Observer {
         this.vm = vm;
         vm.throttle.bind(throttleSlider.valueProperty());
         vm.rudder.bind(rudderSlider.valueProperty());
+        vm.autopilotText.bind(autoPilotCode.textProperty());
         Platform.runLater(()-> {
             try {
                 vm.joyStick.bind(joyStick.getProperty());

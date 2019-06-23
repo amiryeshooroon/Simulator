@@ -3,6 +3,7 @@ package ViewModel;
 
 import Exceptions.CantConnectToServerException;
 import Exceptions.CodeErrorException;
+import Exceptions.UpdateTypes;
 import Utilities.AutoPilot.Intepeter.Parser;
 import Model.MySimulatorModel;
 import Utilities.Properties.CompositeProperty;
@@ -85,7 +86,6 @@ public class MainControllerViewModel extends Observable implements Observer {
     }
     @Override
     public void update(java.util.Observable o, Object arg) {
-
     }
 
     public double planeLong(){

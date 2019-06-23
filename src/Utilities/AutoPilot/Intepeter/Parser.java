@@ -1,6 +1,8 @@
 package Utilities.AutoPilot.Intepeter;
 
 import Exceptions.CodeErrorException;
+import Model.MySimulatorModel;
+import Model.SimulatorModel;
 import Utilities.AutoPilot.Expression.Function;
 import Utilities.AutoPilot.Intepeter.Commands.*;
 
@@ -14,6 +16,7 @@ public class Parser {
     private Deque<Scope> scopes;
     private ConcurrentHashMap<String, Double> bindVarValueMap;
     private HashMap<String, Function> globalFuncitonMap;
+    public MySimulatorModel myModel;
     public HashMap<String, Command> getCommandMap() {
         return commandMap;
     }
@@ -119,5 +122,10 @@ public class Parser {
         }
         return ((ReturnCommand)commandMap.get("return")).getReturnValue();
     }
+    public double parse(String codeStr, MySimulatorModel model) throws CodeErrorException {
+        myModel = model;
+        return parse(codeStr);
+    }
+
 
 }

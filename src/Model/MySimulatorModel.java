@@ -4,6 +4,7 @@ import Exceptions.CodeErrorException;
 import Utilities.AutoPilot.Exceptions.NotConnectedToServerException;
 import Utilities.AutoPilot.Intepeter.Parser;
 import Search.Pair;
+import Utilities.MyT;
 import Utilities.ServersUtilities.SimulatorServer;
 import Utilities.ServersUtilities.SolverCommunicator;
 
@@ -28,7 +29,15 @@ public class MySimulatorModel extends Observable implements SimulatorModel {
 
     @Override
     public void autoFly(String code) throws CodeErrorException {
-        Parser.getInstance().parse(code);
+        MyT<Boolean> error = new MyT<>(false);
+        new Thread(()-> {
+            try {
+                Parser.getInstance().parse(code);
+            } catch (CodeErrorException e) {
+                error.setT(true);
+            }
+        }).start();
+        if(error.getT()) throw new CodeErrorException();
         //get airplaneX and airplaneY every some sec for the map and update, optional
     }
 

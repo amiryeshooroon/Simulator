@@ -2,7 +2,6 @@ package Utilities.Properties;
 
 import Exceptions.WrongLimitError;
 import javafx.util.Pair;
-
 import java.util.*;
 
 public class CompositeProperty<T> implements Observer{

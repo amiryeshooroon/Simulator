@@ -6,5 +6,4 @@ import java.util.concurrent.BlockingDeque;
 import java.util.concurrent.CompletableFuture;
 
 public class ActiveSimulatorServer {
-    private BlockingDeque<Pair<String,CompletableFuture>>
 }

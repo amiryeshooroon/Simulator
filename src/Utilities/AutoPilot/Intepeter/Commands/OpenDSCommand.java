@@ -1,5 +1,6 @@
 package Utilities.AutoPilot.Intepeter.Commands;
 
+import Exceptions.UpdateTypes;
 import Utilities.AutoPilot.Exceptions.ServerAlreadyAliveException;
 import Utilities.AutoPilot.Intepeter.InterpterUtilities.StringToArgumentParser;
 import Utilities.AutoPilot.Intepeter.Parser;
@@ -86,9 +87,7 @@ public class OpenDSCommand implements Command {
             new Thread(()->runServer((int)args.get(1), (int)args.get(2))).start(); //test
             try {
                 wait();
-                Scanner scanner = new Scanner(System.in);
-                scanner.nextLine();
-                System.out.println("start");
+                Parser.getInstance().myModel.notifyObservers(UpdateTypes.ActivateSimulator);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
