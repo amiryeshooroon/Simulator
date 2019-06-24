@@ -17,6 +17,7 @@ import javafx.beans.value.ObservableValue;
 import java.io.BufferedInputStream;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.Scanner;
@@ -28,10 +29,12 @@ public class MainControllerViewModel extends Observable implements Observer {
     public DoubleProperty throttle, rudder;
     public CompositeProperty<Double> joyStick;
     public CompositeProperty<Double> clickOnMapLocation;
+    public StringProperty path;
     public MainControllerViewModel(){
         autopilotText = new SimpleStringProperty();
         ipPortText = new SimpleStringProperty();
         throttle = new SimpleDoubleProperty();
+        path = new SimpleStringProperty();
         joyStick = new CompositeProperty<>(2);
         joyStick.setOnUpdate(()->
                 {
@@ -107,5 +110,8 @@ public class MainControllerViewModel extends Observable implements Observer {
                 obj.wait();
             } catch (InterruptedException e){}
         }
+    }
+    public void findPath(List<List<Double>> map){
+
     }
 }

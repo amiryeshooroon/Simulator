@@ -50,6 +50,7 @@ public class MainWindowController implements Initializable, Observer {
     private ImageView planeImage;
     private MainControllerViewModel vm;
     private CompositeProperty<Double> clickOnMapLocation;
+    private StringProperty path;
     private MyProperty<Double> x,y;
     private AnimationTimer timer;
     private boolean isMapLoaded, isConnectedToSimulator;
@@ -59,6 +60,7 @@ public class MainWindowController implements Initializable, Observer {
         vm.throttle.bind(throttleSlider.valueProperty());
         vm.rudder.bind(rudderSlider.valueProperty());
         vm.autopilotText.bind(autoPilotCode.textProperty());
+        path.bind(vm.path);
         Platform.runLater(()-> {
             try {
                 vm.joyStick.bind(joyStick.getProperty());
@@ -105,6 +107,7 @@ public class MainWindowController implements Initializable, Observer {
         clickOnMapLocation = new CompositeProperty<>(2);
         x = new MyProperty<>();
         y = new MyProperty<>();
+        path = new SimpleStringProperty();
         isMapLoaded = false;
         isConnectedToSimulator = false;
         planeImage.setImage(new Image(getClass().getResource("plane.png").toString()));
