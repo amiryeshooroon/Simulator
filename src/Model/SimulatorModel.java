@@ -1,15 +1,14 @@
 package Model;
 
 import Exceptions.CodeErrorException;
-import Search.Pair;
-
+import javafx.util.Pair;
 import java.io.IOException;
 import java.util.List;
 
 public interface SimulatorModel {
     void autoFly(String code) throws Exception;
-    void calculatePath(List<List<Double>> map, Pair<Double, Double> start, Pair<Double, Double> end);
-    void pathFly(List<List<Double>> map, Pair<Double, Double> start, Pair<Double, Double> end);
+    void calculatePath(List<List<Double>> map, Pair<Integer, Integer> start, Pair<Integer, Integer> end);
+    void pathFly(List<List<Double>> map, Pair<Integer, Integer> start, Pair<Integer, Integer> end);
     void joystickFly(double aileron, double elevator);
     void setThrottle(double value);
     void setRudder(double value);

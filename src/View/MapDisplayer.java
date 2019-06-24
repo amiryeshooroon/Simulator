@@ -12,6 +12,7 @@ import javafx.scene.image.WritableImage;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Region;
 import javafx.scene.paint.Color;
+import javafx.util.Pair;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -29,10 +30,10 @@ public class MapDisplayer extends Canvas {
     private double planeX, planeY;
     private double prevXX, prevXY;
     private double startLongitude, startLatitude, area;
-    private AnimationTimer timer;
     private GraphicsContext gc;
     private Pane planePane;
-    private Region test;
+    private List<Pair<Double, Double>> pathIndexes = null;
+
     public void displayMap(List<List<Double>> newMap, double longitude, double latitude, double area){
         map = newMap;
         gc = null;
@@ -85,14 +86,66 @@ public class MapDisplayer extends Canvas {
             prevXY = y;
         }
     }
+    private Pair<Integer, Integer> getClosestIndexes(double x, double y){
+        return new Pair<>(((int)(x/cellWidth)), ((int)(y/cellHighet)));
+    }
+    private void drawPath(String path){
+        if(pathIndexes != null) {
+            for (Pair<Double, Double> pair : pathIndexes) {
+                if(pair.getKey() == prevXX && pair.getValue() == prevXY) continue;
+                redrawAt((int) (pair.getValue() / cellHighet), (int) (pair.getKey() / cellWidth));
+            }
+            pathIndexes.clear();
+        }
+        else pathIndexes = new ArrayList<>();
+        Pair<Integer, Integer> indexes = getClosestIndexes(planeX, planeY);
+        double currentXIndex = indexes.getKey(), currentYIndex = indexes .getValue(),x,y, rad = Math.min(cellWidth, cellHighet)/2.5;
+        String[] directions = path.split(",");
+        for(String direction : directions){
+            switch (direction){
+                case "Up":
+                    x =currentXIndex*cellWidth;
+                    y = (currentYIndex-1)*cellHighet;
+                    gc.setFill(Color.BLACK);
+                    gc.fillOval(x, y, rad, rad);
+                    pathIndexes.add(new Pair<>(x, y));
+                    currentXIndex = (int)(x/cellWidth);
+                    currentYIndex = (int)(y/cellHighet);
+                    break;
+                case "Down":
+                    x=currentXIndex*cellWidth;
+                    y = (currentYIndex+1)*cellHighet;
+                    gc.setFill(Color.BLACK);
+                    gc.fillOval(x, y, rad, rad);
+                    pathIndexes.add(new Pair<>(x, y));
+                    currentXIndex = (int)(x/cellWidth);
+                    currentYIndex = (int)(y/cellHighet);
+                    break;
+                case "Left":
+                    x =(currentXIndex-1)*cellWidth;
+                    y = currentYIndex*cellHighet;
+                    gc.setFill(Color.BLACK);
+                    gc.fillOval(x, y, rad, rad);
+                    pathIndexes.add(new Pair<>(x, y));
+                    currentXIndex = (int)(x/cellWidth);
+                    currentYIndex = (int)(y/cellHighet);
+                    break;
+                case "Right":
+                    x = (currentXIndex+1)*cellWidth;
+                    y = currentYIndex*cellHighet;
+                    gc.setFill(Color.BLACK);
+                    gc.fillOval(x, y, rad, rad);
+                    pathIndexes.add(new Pair<>(x, y));
+                    currentXIndex = (int)(x/cellWidth);
+                    currentYIndex = (int)(y/cellHighet);
+                    break;
+            }
+        }
+    }
     public void displayAirplane(ImageView p, double longitude , double latitude){
         double sqrtArea = Math.sqrt(area);
         double x = (((latitude - startLatitude + sqrtArea)/ sqrtArea))*cellWidth;
         double y = (((longitude - startLongitude + sqrtArea)/sqrtArea))*cellHighet;
-//        System.out.println("latitude: " + latitude);
-//        System.out.println("longtitude: " + longitude);
-//        System.out.println("("+x+","+y+")");
-        //gc.drawImage(plane, x, y, plane.getWidth(), plane.getHeight());
         planeX = x;//
         planeY = y;
         p.setX(x);

@@ -3,12 +3,10 @@ package Model;
 import Exceptions.CodeErrorException;
 import Utilities.AutoPilot.Exceptions.NotConnectedToServerException;
 import Utilities.AutoPilot.Intepeter.Parser;
-import Search.Pair;
+import javafx.util.Pair;
 import Utilities.MyT;
 import Utilities.ServersUtilities.SimulatorServer;
 import Utilities.ServersUtilities.SolverCommunicator;
-
-import java.io.IOException;
 import java.util.List;
 import java.util.Observable;
 import java.util.concurrent.CancellationException;
@@ -55,7 +53,7 @@ public class MySimulatorModel extends Observable implements SimulatorModel {
     }
 
     @Override
-    public void calculatePath(List<List<Double>> map, Pair<Double, Double> start, Pair<Double, Double> end) {
+    public void calculatePath(List<List<Double>> map, Pair<Integer, Integer> start, Pair<Integer, Integer> end) {
         //can maybe announce on label that we calculating
         for (List<Double> doubles : map) {
             for (int j = 0; j < doubles.size() - 1; j++) {
@@ -68,28 +66,12 @@ public class MySimulatorModel extends Observable implements SimulatorModel {
         solver.sendLineWithLineSeperator(end.getKey().toString() + "," + end.getValue().toString());
         solver.flushOutput();
         path = solver.readLine();
-        //What to do in the situations:
-        //Up:
-        //Down:
-        //Left:
-        //Right:
-        //it depends let put index for each case Up will be 3 Down will be 4 Left will be 2 Right will be 1
-        //now we need to build a function, we can assume that we won't get up and than down or the opposite same thing
-        //about right and left so what we going to do?
-        //0 to 1 90
-        //0 to 3 -90
-        //1 to 2 90
-        //1 to 0 -90
-        //2 to 3 90
-        //2 to 1 -90
-        //3 to 0 90
-        //3 to 2 -90
-        //(where-from)*90
-        //if(from > where) (-1)^(1+
     }
-
+    public String getPath(){
+        return path;
+    }
     @Override
-    public void pathFly(List<List<Double>> map, Pair<Double, Double> start, Pair<Double, Double> end) {
+    public void pathFly(List<List<Double>> map, Pair<Integer, Integer> start, Pair<Integer, Integer> end) {
         if(path == null){
             calculatePath(map, start, end);
         }
@@ -164,7 +146,7 @@ public class MySimulatorModel extends Observable implements SimulatorModel {
                         }
                         if(stop) break;
                         Thread.sleep(250);
-                    } catch (NotConnectedToServerException | InterruptedException e) {}
+                    } catch (NotConnectedToServerException | InterruptedException ignored) {}
                 }
             }
         }).start();

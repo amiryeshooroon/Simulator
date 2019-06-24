@@ -13,6 +13,7 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.util.Pair;
 
 import java.io.BufferedInputStream;
 import java.io.FileInputStream;
@@ -111,7 +112,8 @@ public class MainControllerViewModel extends Observable implements Observer {
             } catch (InterruptedException e){}
         }
     }
-    public void findPath(List<List<Double>> map){
-
+    public void findPath(List<List<Double>> map, Pair<Integer, Integer> start, Pair<Integer, Integer> end){
+        simulatorModel.pathFly(map, start, end);
+        path.set(simulatorModel.getPath());
     }
 }
