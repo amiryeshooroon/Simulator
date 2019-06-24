@@ -48,7 +48,7 @@ public class MySimulatorModel extends Observable implements SimulatorModel {
             }
             return true;
         });
-        f.thenAccept(b -> {
+        f.thenAccept(b -> { //
             if(!b) notifyObservers(new CodeErrorException());
         });
         //get airplaneX and airplaneY every some sec for the map and update, optional
