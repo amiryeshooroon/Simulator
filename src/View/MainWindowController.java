@@ -181,6 +181,9 @@ public class MainWindowController implements Initializable, Observer {
         x.set(mouseEvent.getX());
         y.set(mouseEvent.getY());
         mapDisplayer.drawX(mouseEvent.getX(), mouseEvent.getY());
+        Pair<Integer, Integer> dstIndex = mapDisplayer.getClosestIndexes(mouseEvent.getX(), mouseEvent.getY()),
+                srcIndex = mapDisplayer.getClosestIndexes(mapDisplayer.getPlaneX(), mapDisplayer.getPlaneY());
+        vm.findPath(mapDisplayer.getMap(), srcIndex, dstIndex);
     }
 
     public void keyPressedPane(KeyEvent keyEvent) {
