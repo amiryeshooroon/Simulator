@@ -94,6 +94,10 @@ public class MainControllerViewModel extends Observable implements Observer {
         return simulatorModel.getLatitude();
     }
 
+    public void stopAutoPilot(){
+        simulatorModel.stopAutoPilot();
+    }
+
     public void startPositionThread(){
         Object obj = new Object();
         simulatorModel.startPosotionsThread(obj);

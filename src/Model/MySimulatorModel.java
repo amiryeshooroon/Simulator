@@ -114,7 +114,6 @@ public class MySimulatorModel extends Observable implements SimulatorModel {
     }
     @Override
     public void joystickFly(double aileron, double elevator) {
-        if(isAutoPilotOn) f.cancel(true);
         try{
             SimulatorServer.getServer().setVariable("/controls/flight/aileron", aileron);
             SimulatorServer.getServer().setVariable("/controls/flight/elevator", elevator);
@@ -176,5 +175,8 @@ public class MySimulatorModel extends Observable implements SimulatorModel {
     }
     public double getLongitude(){
         return longitude.get();
+    }
+    public void stopAutoPilot(){
+        if(isAutoPilotOn) f.cancel(true);
     }
 }

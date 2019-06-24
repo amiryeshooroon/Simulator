@@ -203,6 +203,7 @@ public class MainWindowController implements Initializable, Observer {
     }
 
     public void selectManual(ActionEvent actionEvent) {
+        vm.stopAutoPilot();
         autoPilotPane.setDisable(true);
         joystickPane.setDisable(false);
     }
