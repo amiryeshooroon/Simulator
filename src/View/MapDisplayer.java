@@ -93,7 +93,7 @@ public class MapDisplayer extends Canvas {
 //        System.out.println("longtitude: " + longitude);
 //        System.out.println("("+x+","+y+")");
         //gc.drawImage(plane, x, y, plane.getWidth(), plane.getHeight());
-        planeX = x;
+        planeX = x;//
         planeY = y;
         p.setX(x);
         p.setY(y);
