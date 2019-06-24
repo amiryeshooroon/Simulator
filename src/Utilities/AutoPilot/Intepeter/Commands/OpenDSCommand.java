@@ -96,7 +96,7 @@ public class OpenDSCommand implements Command {
         p.myModel.setModelChanged();
         p.myModel.notifyObservers(new Integer(1));
         System.out.println("BEFORE ");
-        System.out.println("DONEEEEE");
+        System.out.println("DONEEEEE"); //
 
     }
     public void stopTimer(){
