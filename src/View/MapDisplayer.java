@@ -44,6 +44,14 @@ public class MapDisplayer extends Canvas {
         return planeY;
     }
 
+    public double getPrevXX() {
+        return prevXX;
+    }
+
+    public double getPrevXY() {
+        return prevXY;
+    }
+
     public void displayMap(List<List<Double>> newMap, double longitude, double latitude, double area){
         map = newMap;
         gc = null;
@@ -99,7 +107,7 @@ public class MapDisplayer extends Canvas {
     public Pair<Integer, Integer> getClosestIndexes(double x, double y){
         return new Pair<>(((int)(x/cellWidth)), ((int)(y/cellHighet)));
     }
-    private void drawPath(String path){
+    public void drawPath(String path){
         if(pathIndexes != null) {
             for (Pair<Double, Double> pair : pathIndexes) {
                 if(pair.getKey() == prevXX && pair.getValue() == prevXY) continue;

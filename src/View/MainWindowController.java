@@ -53,7 +53,7 @@ public class MainWindowController implements Initializable, Observer {
     private StringProperty path;
     private MyProperty<Double> x,y;
     private AnimationTimer timer;
-    private boolean isMapLoaded, isConnectedToSimulator;
+    private boolean isMapLoaded, isConnectedToSimulator, isConnectedToSolver;
 
     public void setViewModel(MainControllerViewModel vm){
         this.vm = vm;
@@ -109,13 +109,13 @@ public class MainWindowController implements Initializable, Observer {
         y = new MyProperty<>();
         path = new SimpleStringProperty();
         isMapLoaded = false;
+        isConnectedToSolver = false;
         isConnectedToSimulator = false;
         planeImage.setImage(new Image(getClass().getResource("plane.png").toString()));
         planeImage.setVisible(false);
         try {
             clickOnMapLocation.bind(new Pair<String, MyProperty<Double>>("x", x), new Pair<String, MyProperty<Double>>("y", y));
-        } catch (WrongLimitError ignored) {
-        }
+        } catch (WrongLimitError ignored) {}
     }
 
     public void onOpenFileClick(){
@@ -160,6 +160,11 @@ public class MainWindowController implements Initializable, Observer {
     }
     public void onClickCalculatePath(){
         connector(false);
+        isConnectedToSolver = true;
+        Pair<Integer, Integer> dstIndex = mapDisplayer.getClosestIndexes(mapDisplayer.getPrevXX(), mapDisplayer.getPrevXY()),
+                srcIndex = mapDisplayer.getClosestIndexes(mapDisplayer.getPlaneX(), mapDisplayer.getPlaneY());
+        vm.findPath(mapDisplayer.getMap(), srcIndex, dstIndex);
+        mapDisplayer.drawPath(path.get());
     }
 
     private boolean connector(boolean flag){
@@ -181,9 +186,12 @@ public class MainWindowController implements Initializable, Observer {
         x.set(mouseEvent.getX());
         y.set(mouseEvent.getY());
         mapDisplayer.drawX(mouseEvent.getX(), mouseEvent.getY());
-        Pair<Integer, Integer> dstIndex = mapDisplayer.getClosestIndexes(mouseEvent.getX(), mouseEvent.getY()),
-                srcIndex = mapDisplayer.getClosestIndexes(mapDisplayer.getPlaneX(), mapDisplayer.getPlaneY());
-        vm.findPath(mapDisplayer.getMap(), srcIndex, dstIndex);
+        if(isConnectedToSimulator) {
+            Pair<Integer, Integer> dstIndex = mapDisplayer.getClosestIndexes(mouseEvent.getX(), mouseEvent.getY()),
+                    srcIndex = mapDisplayer.getClosestIndexes(mapDisplayer.getPlaneX(), mapDisplayer.getPlaneY());
+            vm.findPath(mapDisplayer.getMap(), srcIndex, dstIndex);
+            mapDisplayer.drawPath(path.get());
+        }
     }
 
     public void keyPressedPane(KeyEvent keyEvent) {
