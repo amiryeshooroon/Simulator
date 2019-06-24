@@ -87,7 +87,9 @@ public class MainWindowController implements Initializable, Observer {
                     alert.setHeaderText("Please confirm");
                     alert.setContentText("Please confirm us when the simulator is running.");
                     alert.showAndWait();
-                    arg.notifyAll();
+                    synchronized (arg) {
+                        arg.notifyAll();
+                    }
                 });
             }
         }

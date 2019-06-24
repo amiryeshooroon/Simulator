@@ -22,10 +22,13 @@ public class MySimulatorModel extends Observable implements SimulatorModel {
     private volatile boolean stop;
     private AtomicReference<Double> longitude;
     private AtomicReference<Double> latitude;
+    private volatile boolean isAutoPilotOn;
+    private CompletableFuture<Boolean> f;
 
     public MySimulatorModel() {
         solver = new SolverCommunicator();
         path = null;
+        isAutoPilotOn = false;
     }
     public void setModelChanged(){
         setChanged();
@@ -33,9 +36,10 @@ public class MySimulatorModel extends Observable implements SimulatorModel {
 
     @Override
     public void autoFly(String code)  {
-        CompletableFuture<Boolean> f = CompletableFuture.supplyAsync(()-> {
+        f=CompletableFuture.supplyAsync(()-> {
             try {
                 Parser.getInstance().parse(code, this);
+                isAutoPilotOn = true;
             } catch (CodeErrorException e) {
                 return false;
             }
@@ -110,6 +114,7 @@ public class MySimulatorModel extends Observable implements SimulatorModel {
     }
     @Override
     public void joystickFly(double aileron, double elevator) {
+        if(isAutoPilotOn) f.cancel(true);
         try{
             SimulatorServer.getServer().setVariable("/controls/flight/aileron", aileron);
             SimulatorServer.getServer().setVariable("/controls/flight/elevator", elevator);
