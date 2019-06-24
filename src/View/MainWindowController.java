@@ -18,12 +18,13 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
 import javafx.scene.input.*;
 import javafx.scene.layout.Pane;
 import javafx.stage.FileChooser;
 import javafx.util.Pair;
 import sample.Main;
-
+import javafx.scene.image.ImageView;
 import java.io.*;
 import java.net.URL;
 import java.util.*;
@@ -45,6 +46,8 @@ public class MainWindowController implements Initializable, Observer {
     private Pane joystickPane;
     @FXML
     private Pane autoPilotPane;
+    @FXML
+    private ImageView planeImage;
     private MainControllerViewModel vm;
     private CompositeProperty<Double> clickOnMapLocation;
     private MyProperty<Double> x,y;
@@ -104,6 +107,8 @@ public class MainWindowController implements Initializable, Observer {
         y = new MyProperty<>();
         isMapLoaded = false;
         isConnectedToSimulator = false;
+        planeImage.setImage(new Image(getClass().getResource("plane.png").toString()));
+        planeImage.setVisible(false);
         try {
             clickOnMapLocation.bind(new Pair<String, MyProperty<Double>>("x", x), new Pair<String, MyProperty<Double>>("y", y));
         } catch (WrongLimitError ignored) {
@@ -170,7 +175,6 @@ public class MainWindowController implements Initializable, Observer {
     }
 
     public void clickOnMap(MouseEvent mouseEvent) {
-        System.out.println("("+mouseEvent.getX()+","+mouseEvent.getY()+")");
         x.set(mouseEvent.getX());
         y.set(mouseEvent.getY());
         mapDisplayer.drawX(mouseEvent.getX(), mouseEvent.getY());
@@ -214,6 +218,7 @@ public class MainWindowController implements Initializable, Observer {
     }
 
     public void planeMover(){
+        stopPlaneMoving();
         vm.startPositionThread();
         try {
             Thread.sleep(20);
@@ -223,7 +228,7 @@ public class MainWindowController implements Initializable, Observer {
         timer = new AnimationTimer() {
             @Override
             public void handle(long now) {
-                mapDisplayer.displayAirplane(vm.planeLong(), vm.planeLat());
+                mapDisplayer.displayAirplane(planeImage, vm.planeLong(), vm.planeLat());
                 try {
                     Thread.sleep(250);
                 } catch (InterruptedException ignored) {}
@@ -233,7 +238,7 @@ public class MainWindowController implements Initializable, Observer {
     }
 
     public void stopPlaneMoving(){
-        timer.stop();
+        if(timer != null) timer.stop();
     }
 
     public void finalize(){

@@ -8,8 +8,10 @@ import Utilities.MyT;
 import Utilities.ServersUtilities.SimulatorServer;
 import Utilities.ServersUtilities.SolverCommunicator;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Observable;
+import java.util.concurrent.CancellationException;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
@@ -42,6 +44,7 @@ public class MySimulatorModel extends Observable implements SimulatorModel {
                 isAutoPilotOn = true;
             } catch (CodeErrorException e) {
                 return false;
+            } catch (CancellationException e){
             }
             return true;
         });
@@ -152,15 +155,14 @@ public class MySimulatorModel extends Observable implements SimulatorModel {
                 while(!stop){
                     try {
                         longitude.set(SimulatorServer.getServer().getVariable("position/longitude-deg"));
-                        System.out.println("longitue: " + longitude);
                         latitude.set(SimulatorServer.getServer().getVariable("position/latitude-deg"));
-                        System.out.println("latitude: " + latitude);
                         if(!sentOnce){
                             synchronized (obj){
                                 obj.notifyAll();
                             }
                             sentOnce = true;
                         }
+                        if(stop) break;
                         Thread.sleep(250);
                     } catch (NotConnectedToServerException | InterruptedException e) {}
                 }

@@ -12,8 +12,8 @@ import java.util.Scanner;
 
 public class SimulatorServer {
     private Scanner in;
-    private PrintWriter out;
-    private Socket socket;
+    private PrintWriter outSocketIn, outSocketOut;
+    private Socket socketIn, socketOut;
     private SimulatorServer() {}
 
     private static class ServerHolder {
@@ -24,49 +24,52 @@ public class SimulatorServer {
     }
 
     public void open(String ip, int port) throws IOException {
-        socket = new Socket(ip, port);
-        in = new Scanner(new BufferedReader(new InputStreamReader(socket.getInputStream())));
-        out = new PrintWriter(socket.getOutputStream());
+        socketIn = new Socket(ip, port);
+        socketOut = new Socket(ip, port);
+        in = new Scanner(new BufferedReader(new InputStreamReader(socketIn.getInputStream())));
+        outSocketIn = new PrintWriter(socketIn.getOutputStream());
+        outSocketOut = new PrintWriter(socketOut.getOutputStream());
     }
     public void stop(){
         try {
-            socket.close();
+            socketIn.close();
+            socketOut.close();
             in.close();
-            out.close();
+            outSocketIn.close();
+            outSocketOut.close();
         } catch (IOException e) {}
     }
     public void setVariable(String varPath, double value) throws NotConnectedToServerException{
-        if(socket == null) throw new NotConnectedToServerException("You might want to check if there is a connect command");
-        out.println("set " + varPath + " " + value);
-        out.flush();
-        in.nextLine();
+        if(socketOut == null) throw new NotConnectedToServerException("You might want to check if there is a connect command");
+        outSocketOut.println("set " + varPath + " " + value);
+        outSocketOut.flush();
+        //in.nextLine();
     }
     public void setVariable(String varPath, boolean value) throws NotConnectedToServerException{
-        if(socket == null) throw new NotConnectedToServerException("You might want to check if there is a connect command");
-        out.println("set " + varPath + " " + value);
-        out.flush();
+        if(socketOut == null) throw new NotConnectedToServerException("You might want to check if there is a connect command");
+        outSocketOut.println("set " + varPath + " " + value);
+        outSocketOut.flush();
     }
     public double getVariable(String varPath) throws NotConnectedToServerException{
-        if(socket == null) throw new NotConnectedToServerException("You might want to check if there is a connect command");
-        out.println("get " + varPath);
-        out.flush();
+        if(socketIn == null) throw new NotConnectedToServerException("You might want to check if there is a connect command");
+        outSocketIn.println("get " + varPath);
+        outSocketIn.flush();
         double val = 0;
         String str = in.nextLine();
+
         Scanner in1 = new Scanner(str);
-        System.out.println("str: " + str);
         in1.useDelimiter("'| ");
         while(in1.hasNext()){
             if(in1.hasNextDouble()) val = in1.nextDouble();
             if(in1.hasNext()) in1.next();
             else break;
         }
-        System.out.println("val: " + val);
         return val;
     }
     public void sendString(String str) throws NotConnectedToServerException{
-        if(socket == null) throw new NotConnectedToServerException("You might want to check if there is a connect command");
-        out.println(str);
-        out.flush();
+        if(socketOut == null) throw new NotConnectedToServerException("You might want to check if there is a connect command");
+        outSocketOut.println(str);
+        outSocketOut.flush();
     }
     public static void main(String... args){
         SimulatorServer server = getServer();

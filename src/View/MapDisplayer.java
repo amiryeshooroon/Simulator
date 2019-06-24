@@ -7,7 +7,10 @@ import javafx.scene.SnapshotParameters;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.image.WritableImage;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.Region;
 import javafx.scene.paint.Color;
 
 import java.util.ArrayList;
@@ -23,12 +26,13 @@ public class MapDisplayer extends Canvas {
     private double cellHighet;
     private Image xPhoto;
     private Image plane;
-    private double prevPlaneX, prevPlaneY;
+    private double planeX, planeY;
     private double prevXX, prevXY;
     private double startLongitude, startLatitude, area;
     private AnimationTimer timer;
     private GraphicsContext gc;
-
+    private Pane planePane;
+    private Region test;
     public void displayMap(List<List<Double>> newMap, double longitude, double latitude, double area){
         map = newMap;
         gc = null;
@@ -38,6 +42,7 @@ public class MapDisplayer extends Canvas {
         plane = new Image(getClass().getResource("plane.png").toString());
         startLongitude = longitude;
         startLatitude = latitude;
+        planePane = new Pane();
         this.area = area;
         calculateMinMax(); //
         redraw();
@@ -80,11 +85,20 @@ public class MapDisplayer extends Canvas {
             prevXY = y;
         }
     }
-    public void displayAirplane(double longitude , double latitude){
-        double x = (((latitude - startLatitude + area)/ area))*cellWidth;
-        double y = (((longitude - startLongitude + area)/area))*cellHighet;
-        System.out.println("Before calculation: (" + longitude + ", " + latitude + ")");
-        System.out.println("After calculation: (" + x + ", " + y + ")");
-        gc.drawImage(plane, x, y, plane.getWidth(), plane.getHeight());
+    public void displayAirplane(ImageView p, double longitude , double latitude){
+        double sqrtArea = Math.sqrt(area);
+        double x = (((latitude - startLatitude + sqrtArea)/ sqrtArea))*cellWidth;
+        double y = (((longitude - startLongitude + sqrtArea)/sqrtArea))*cellHighet;
+//        System.out.println("latitude: " + latitude);
+//        System.out.println("longtitude: " + longitude);
+//        System.out.println("("+x+","+y+")");
+        //gc.drawImage(plane, x, y, plane.getWidth(), plane.getHeight());
+        planeX = x;
+        planeY = y;
+        p.setX(x);
+        p.setY(y);
+        p.setFitWidth(cellWidth);
+        p.setFitHeight(cellHighet);
+        p.setVisible(true);
     }
 }

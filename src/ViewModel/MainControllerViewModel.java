@@ -100,6 +100,7 @@ public class MainControllerViewModel extends Observable implements Observer {
 
     public void startPositionThread(){
         Object obj = new Object();
+        simulatorModel.stopPositionsThread();
         simulatorModel.startPosotionsThread(obj);
         synchronized (obj) {
             try {
