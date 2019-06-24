@@ -53,12 +53,7 @@ public class MainControllerViewModel extends Observable implements Observer {
         simulatorModel = m;
     }
     public void sendToParser(){
-        try {
-            simulatorModel.autoFly(autopilotText.get());
-        } catch (CodeErrorException e) {
-            setChanged();
-            notifyObservers(new CodeErrorException());
-        }
+        simulatorModel.autoFly(autopilotText.get());
     }
 
     public boolean connectToSimulator(){

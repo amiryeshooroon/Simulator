@@ -10,6 +10,7 @@ import Utilities.ServersUtilities.SolverCommunicator;
 
 import java.util.List;
 import java.util.Observable;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -18,7 +19,7 @@ public class MySimulatorModel extends Observable implements SimulatorModel {
     private int port;
     private String path;
     private SolverCommunicator solver;
-    private boolean stop;
+    private volatile boolean stop;
     private AtomicReference<Double> longitude;
     private AtomicReference<Double> latitude;
 
@@ -31,16 +32,18 @@ public class MySimulatorModel extends Observable implements SimulatorModel {
     }
 
     @Override
-    public void autoFly(String code) throws CodeErrorException {
-        MyT<Boolean> error = new MyT<>(false);
-        new Thread(()-> {
+    public void autoFly(String code)  {
+        CompletableFuture<Boolean> f = CompletableFuture.supplyAsync(()-> {
             try {
                 Parser.getInstance().parse(code, this);
             } catch (CodeErrorException e) {
-                error.setT(true);
+                return false;
             }
-        }).start();
-        if(error.getT()) throw new CodeErrorException();
+            return true;
+        });
+        f.thenAccept(b -> {
+            if(!b) notifyObservers(new CodeErrorException());
+        });
         //get airplaneX and airplaneY every some sec for the map and update, optional
     }
 
@@ -92,7 +95,7 @@ public class MySimulatorModel extends Observable implements SimulatorModel {
         try {
             SimulatorServer.getServer().setVariable("/controls/engines/current-engine/throttle", value);
         } catch (NotConnectedToServerException e) {
-            notifyObservers();
+            notifyObservers(e);
         }
     }
 

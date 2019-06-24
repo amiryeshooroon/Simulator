@@ -1,11 +1,11 @@
 package Utilities.AutoPilot.Intepeter.Commands;
 
 import Exceptions.UpdateTypes;
-import Search.Pair;
 import Utilities.AutoPilot.Exceptions.ServerAlreadyAliveException;
 import Utilities.AutoPilot.Intepeter.InterpterUtilities.StringToArgumentParser;
 import Utilities.AutoPilot.Intepeter.Parser;
 import Utilities.AutoPilot.Intepeter.TypeArguments;
+import javafx.util.Pair;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -94,7 +94,13 @@ public class OpenDSCommand implements Command {
         }
         Parser p = Parser.getInstance();
         p.myModel.setModelChanged();
-        p.myModel.notifyObservers(new Integer(1));
+        Integer i = 1;
+        p.myModel.notifyObservers(i);
+        synchronized (i) {
+            try {
+                i.wait();
+            } catch (InterruptedException ignored) {}
+        }
         System.out.println("BEFORE ");
         System.out.println("DONEEEEE"); //
 

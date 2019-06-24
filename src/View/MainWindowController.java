@@ -79,13 +79,16 @@ public class MainWindowController implements Initializable, Observer {
             alert.showAndWait();
         }
         else{
-            Integer type = (Integer)arg;
-            if(type.equals(1)){
-                Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.setTitle("Confirm");
-                alert.setHeaderText("Please confirm");
-                alert.setContentText("Please confirm us when the simulator is running.");
-                alert.showAndWait();
+            Integer i = (Integer)arg;
+            if(i.equals(1)){
+                Platform.runLater(()->{
+                    Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                    alert.setTitle("Confirm");
+                    alert.setHeaderText("Please confirm");
+                    alert.setContentText("Please confirm us when the simulator is running.");
+                    alert.showAndWait();
+                    arg.notifyAll();
+                });
             }
         }
     }
