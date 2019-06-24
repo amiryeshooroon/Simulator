@@ -20,6 +20,7 @@ public class Main extends Application {
             MySimulatorModel m = new MySimulatorModel();
             MainControllerViewModel vm = new MainControllerViewModel();
             m.addObserver(vm);
+            vm.setModel(m);
             FXMLLoader fxl = new FXMLLoader();
             Parent root = fxl.load(getClass().getResource("sample.fxml").openStream());
             //Parent root = FXMLLoader.load(getClass().getResource("sample.fxml"));

@@ -26,13 +26,16 @@ public class MySimulatorModel extends Observable implements SimulatorModel {
         solver = new SolverCommunicator();
         path = null;
     }
+    public void setModelChanged(){
+        setChanged();
+    }
 
     @Override
     public void autoFly(String code) throws CodeErrorException {
         MyT<Boolean> error = new MyT<>(false);
         new Thread(()-> {
             try {
-                Parser.getInstance().parse(code);
+                Parser.getInstance().parse(code, this);
             } catch (CodeErrorException e) {
                 error.setT(true);
             }

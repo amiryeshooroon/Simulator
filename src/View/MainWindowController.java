@@ -2,6 +2,7 @@ package View;
 
 import Exceptions.CantConnectToServerException;
 import Exceptions.CodeErrorException;
+import Exceptions.UpdateTypes;
 import Exceptions.WrongLimitError;
 import Intepeter.Parser;
 import Utilities.Properties.CompositeProperty;
@@ -76,6 +77,16 @@ public class MainWindowController implements Initializable, Observer {
             alert.setHeaderText("Code Error");
             alert.setContentText("Could not run code. Please check for errors.");
             alert.showAndWait();
+        }
+        else{
+            Integer type = (Integer)arg;
+            if(type.equals(1)){
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Confirm");
+                alert.setHeaderText("Please confirm");
+                alert.setContentText("Please confirm us when the simulator is running.");
+                alert.showAndWait();
+            }
         }
     }
 

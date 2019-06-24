@@ -29,7 +29,6 @@ public class MainControllerViewModel extends Observable implements Observer {
     public CompositeProperty<Double> joyStick;
     public CompositeProperty<Double> clickOnMapLocation;
     public MainControllerViewModel(){
-        simulatorModel = new MySimulatorModel();
         autopilotText = new SimpleStringProperty();
         ipPortText = new SimpleStringProperty();
         throttle = new SimpleDoubleProperty();
@@ -50,7 +49,9 @@ public class MainControllerViewModel extends Observable implements Observer {
         );
         clickOnMapLocation = new CompositeProperty<>(2);
     }
-
+    public void setModel(MySimulatorModel m){
+        simulatorModel = m;
+    }
     public void sendToParser(){
         try {
             simulatorModel.autoFly(autopilotText.get());
@@ -86,6 +87,8 @@ public class MainControllerViewModel extends Observable implements Observer {
     }
     @Override
     public void update(java.util.Observable o, Object arg) {
+        setChanged();
+        notifyObservers(arg);
     }
 
     public double planeLong(){

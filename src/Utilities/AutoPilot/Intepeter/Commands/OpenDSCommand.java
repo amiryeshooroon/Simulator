@@ -1,6 +1,7 @@
 package Utilities.AutoPilot.Intepeter.Commands;
 
 import Exceptions.UpdateTypes;
+import Search.Pair;
 import Utilities.AutoPilot.Exceptions.ServerAlreadyAliveException;
 import Utilities.AutoPilot.Intepeter.InterpterUtilities.StringToArgumentParser;
 import Utilities.AutoPilot.Intepeter.Parser;
@@ -12,6 +13,7 @@ import java.io.InputStreamReader;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketTimeoutException;
+import java.sql.SQLOutput;
 import java.util.List;
 import java.util.Scanner;
 import java.util.concurrent.ConcurrentHashMap;
@@ -83,15 +85,19 @@ public class OpenDSCommand implements Command {
     @Override
     public void doCommand(List<Object> args) throws ServerAlreadyAliveException {
         stop = false;
-        synchronized (this){
-            new Thread(()->runServer((int)args.get(1), (int)args.get(2))).start(); //test
+        synchronized (this) {
+            new Thread(() -> runServer((int) args.get(1), (int) args.get(2))).start(); //test
             try {
                 wait();
-                Parser.getInstance().myModel.notifyObservers(UpdateTypes.ActivateSimulator);
             } catch (InterruptedException e) {
-                e.printStackTrace();
             }
         }
+        Parser p = Parser.getInstance();
+        p.myModel.setModelChanged();
+        p.myModel.notifyObservers(new Integer(1));
+        System.out.println("BEFORE ");
+        System.out.println("DONEEEEE");
+
     }
     public void stopTimer(){
         stop = true;
