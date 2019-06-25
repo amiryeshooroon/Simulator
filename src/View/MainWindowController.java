@@ -2,9 +2,7 @@ package View;
 
 import Exceptions.CantConnectToServerException;
 import Exceptions.CodeErrorException;
-import Exceptions.UpdateTypes;
 import Exceptions.WrongLimitError;
-import Intepeter.Parser;
 import Utilities.Properties.CompositeProperty;
 import Utilities.Properties.MyProperty;
 import ViewModel.MainControllerViewModel;
@@ -12,8 +10,6 @@ import javafx.animation.AnimationTimer;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -48,6 +44,8 @@ public class MainWindowController implements Initializable, Observer {
     private Pane autoPilotPane;
     @FXML
     private ImageView planeImage;
+    @FXML
+    private Button loadData;
     private MainControllerViewModel vm;
     private CompositeProperty<Double> clickOnMapLocation;
     private StringProperty path;
@@ -147,6 +145,7 @@ public class MainWindowController implements Initializable, Observer {
             mapDisplayer.displayMap(records, longtitude, latitude, area);
             isMapLoaded = true;
             if(isConnectedToSimulator) planeMover();
+            loadData.setDisable(true);
         }
     }
 
@@ -159,12 +158,13 @@ public class MainWindowController implements Initializable, Observer {
 
     }
     public void onClickCalculatePath(){
-        connector(false);
-        isConnectedToSolver = true;
-        Pair<Integer, Integer> dstIndex = mapDisplayer.getClosestIndexes(mapDisplayer.getPrevXX(), mapDisplayer.getPrevXY()),
-                srcIndex = mapDisplayer.getClosestIndexes(mapDisplayer.getPlaneX(), mapDisplayer.getPlaneY());
-        vm.findPath(mapDisplayer.getMap(), srcIndex, dstIndex);
-        mapDisplayer.drawPath(path.get());
+        if(connector(false)) {
+            isConnectedToSolver = true;
+            Pair<Integer, Integer> dstIndex = mapDisplayer.getClosestIndexes(mapDisplayer.getPrevXY(), mapDisplayer.getPrevXX()),
+                    srcIndex = mapDisplayer.getClosestIndexes(mapDisplayer.getPlaneY(), mapDisplayer.getPlaneX());
+            vm.findPath(mapDisplayer.getMap(), srcIndex, dstIndex);
+            new Thread(() -> mapDisplayer.drawPath(path.get())).start();
+        }
     }
 
     private boolean connector(boolean flag){
@@ -175,9 +175,11 @@ public class MainWindowController implements Initializable, Observer {
         Optional<String> result = dialog.showAndWait();
         boolean succeed = false;
         if(vm != null) {
-            if (flag) succeed = vm.connectToSimulator();
-            else succeed = vm.connectToSolver();
-            return succeed;
+            if (result.isPresent()) {
+                if (flag) succeed = vm.connectToSimulator();
+                else succeed = vm.connectToSolver();
+                return succeed;
+            }
         }
         return false;
     }
@@ -186,9 +188,9 @@ public class MainWindowController implements Initializable, Observer {
         x.set(mouseEvent.getX());
         y.set(mouseEvent.getY());
         mapDisplayer.drawX(mouseEvent.getX(), mouseEvent.getY());
-        if(isConnectedToSimulator) {
-            Pair<Integer, Integer> dstIndex = mapDisplayer.getClosestIndexes(mouseEvent.getX(), mouseEvent.getY()),
-                    srcIndex = mapDisplayer.getClosestIndexes(mapDisplayer.getPlaneX(), mapDisplayer.getPlaneY());
+        if(isConnectedToSolver) {
+            Pair<Integer, Integer> dstIndex = mapDisplayer.getClosestIndexes(mapDisplayer.getPrevXY(), mapDisplayer.getPrevXX()),
+                    srcIndex = mapDisplayer.getClosestIndexes(mapDisplayer.getPlaneY(), mapDisplayer.getPlaneX());
             vm.findPath(mapDisplayer.getMap(), srcIndex, dstIndex);
             mapDisplayer.drawPath(path.get());
         }
@@ -212,9 +214,6 @@ public class MainWindowController implements Initializable, Observer {
         }
     }
 
-    public void engine(ActionEvent actionEvent) {
-        vm.engine();
-    }
 
     public void fly(ActionEvent actionEvent) {
         vm.sendToParser();

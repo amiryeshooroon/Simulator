@@ -26,7 +26,6 @@ public class MapDisplayer extends Canvas {
     private double cellWidth;
     private double cellHighet;
     private Image xPhoto;
-    private Image plane;
     private double planeX, planeY;
     private double prevXX, prevXY;
     private double startLongitude, startLatitude, area;
@@ -58,7 +57,6 @@ public class MapDisplayer extends Canvas {
         prevXX = 0;
         prevXY = 0;
         xPhoto = new Image(getClass().getResource("Xphoto.png").toString());
-        plane = new Image(getClass().getResource("plane.png").toString());
         startLongitude = longitude;
         startLatitude = latitude;
         planePane = new Pane();
@@ -100,22 +98,22 @@ public class MapDisplayer extends Canvas {
         if(gc != null) {
             redrawAt((int)(prevXY/cellHighet), (int)(prevXX / cellWidth));
             gc.drawImage(xPhoto, ((int)(x / cellWidth))*cellWidth, ((int)(y/cellHighet))*cellHighet, cellWidth, cellHighet);
-            prevXX = x;
-            prevXY = y;
+            prevXX = ((int)(x / cellWidth))*cellWidth;
+            prevXY = ((int)(y/cellHighet))*cellHighet;
         }
     }
     public Pair<Integer, Integer> getClosestIndexes(double x, double y){
-        return new Pair<>(((int)(x/cellWidth)), ((int)(y/cellHighet)));
+        return new Pair<>(((int)(x/cellHighet)), ((int)(y/cellWidth)));
     }
     public void drawPath(String path){
         if(pathIndexes != null) {
             for (Pair<Double, Double> pair : pathIndexes) {
-                if(pair.getKey() == prevXX && pair.getValue() == prevXY) continue;
                 redrawAt((int) (pair.getValue() / cellHighet), (int) (pair.getKey() / cellWidth));
             }
             pathIndexes.clear();
         }
         else pathIndexes = new ArrayList<>();
+        drawX(prevXX, prevXY);
         Pair<Integer, Integer> indexes = getClosestIndexes(planeX, planeY);
         double currentXIndex = indexes.getKey(), currentYIndex = indexes .getValue(),x,y, rad = Math.min(cellWidth, cellHighet)/2.5;
         String[] directions = path.split(",");
@@ -125,37 +123,37 @@ public class MapDisplayer extends Canvas {
                     x =currentXIndex*cellWidth;
                     y = (currentYIndex-1)*cellHighet;
                     gc.setFill(Color.BLACK);
-                    gc.fillOval(x, y, rad, rad);
+                    gc.fillOval(x + cellWidth / 4, y + cellHighet / 4, rad, rad);
                     pathIndexes.add(new Pair<>(x, y));
-                    currentXIndex = (int)(x/cellWidth);
-                    currentYIndex = (int)(y/cellHighet);
+                    //currentXIndex = (int)(x/cellWidth);
+                    currentYIndex--;
                     break;
                 case "Down":
                     x=currentXIndex*cellWidth;
                     y = (currentYIndex+1)*cellHighet;
                     gc.setFill(Color.BLACK);
-                    gc.fillOval(x, y, rad, rad);
+                    gc.fillOval(x + cellWidth / 4, y + cellHighet / 4, rad, rad);
                     pathIndexes.add(new Pair<>(x, y));
-                    currentXIndex = (int)(x/cellWidth);
-                    currentYIndex = (int)(y/cellHighet);
+                    //currentXIndex = (int)(x/cellWidth);
+                    currentYIndex++;
                     break;
                 case "Left":
                     x =(currentXIndex-1)*cellWidth;
                     y = currentYIndex*cellHighet;
                     gc.setFill(Color.BLACK);
-                    gc.fillOval(x, y, rad, rad);
+                    gc.fillOval(x + cellWidth / 4, y + cellHighet / 4, rad, rad);
                     pathIndexes.add(new Pair<>(x, y));
-                    currentXIndex = (int)(x/cellWidth);
-                    currentYIndex = (int)(y/cellHighet);
+                    currentXIndex--;
+                    //currentYIndex = (int)(y/cellHighet);
                     break;
                 case "Right":
                     x = (currentXIndex+1)*cellWidth;
                     y = currentYIndex*cellHighet;
                     gc.setFill(Color.BLACK);
-                    gc.fillOval(x, y, rad, rad);
+                    gc.fillOval(x + cellWidth / 4, y + cellHighet / 4, rad, rad);
                     pathIndexes.add(new Pair<>(x, y));
-                    currentXIndex = (int)(x/cellWidth);
-                    currentYIndex = (int)(y/cellHighet);
+                    currentXIndex++;
+                    //currentYIndex = (int)(y/cellHighet);
                     break;
             }
         }

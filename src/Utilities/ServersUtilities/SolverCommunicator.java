@@ -31,10 +31,13 @@ public class SolverCommunicator {
         return null;
     }
     public void disconnect(){
-        try {
-            br.close();
-            pr.close();
-            solver.close();
-        } catch (IOException e) {}
+        if(solver != null) {
+            try {
+                br.close();
+                pr.close();
+                solver.close();
+            } catch (IOException e) {
+            }
+        }
     }
 }

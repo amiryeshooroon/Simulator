@@ -52,6 +52,10 @@ public class MySimulatorModel extends Observable implements SimulatorModel {
         //get airplaneX and airplaneY every some sec for the map and update, optional
     }
 
+    public SolverCommunicator getSolver() {
+        return solver;
+    }
+
     @Override
     public void calculatePath(List<List<Double>> map, Pair<Integer, Integer> start, Pair<Integer, Integer> end) {
         //can maybe announce on label that we calculating
@@ -75,8 +79,6 @@ public class MySimulatorModel extends Observable implements SimulatorModel {
         if(path == null){
             calculatePath(map, start, end);
         }
-        //thread that move according to the string we got
-        //thread gets the location every 500ms can be in timer and then updated airplaneX, airplaneY they can be i,j (airplaneX for j and airplaneY for i)
     }
 
     @Override
@@ -117,15 +119,6 @@ public class MySimulatorModel extends Observable implements SimulatorModel {
         //connect to solver
         else solver.connect(ip, port);
     }
-    @Override
-    public void engine(){
-        try {
-            SimulatorServer.getServer().setVariable("/controls/engines/engine/magnetos", 3);
-            SimulatorServer.getServer().setVariable("/controls/switches/starter", true);
-        } catch (NotConnectedToServerException e) {
-            //e.printStackTrace();
-        }
-    }
     public void startPosotionsThread(Object obj){
         stop = false;
         latitude = new AtomicReference<>();
@@ -162,5 +155,12 @@ public class MySimulatorModel extends Observable implements SimulatorModel {
     }
     public void stopAutoPilot(){
         if(isAutoPilotOn) f.cancel(true);
+    }
+
+    @Override
+    protected void finalize() throws Throwable {
+        super.finalize();
+        stopAutoPilot();
+        stopPositionsThread();
     }
 }

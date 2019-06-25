@@ -1,6 +1,7 @@
 package sample;
 
 import Model.MySimulatorModel;
+import Model.SimulatorModel;
 import View.MainWindowController;
 import ViewModel.MainControllerViewModel;
 import javafx.application.Application;
@@ -14,10 +15,11 @@ import javafx.stage.Stage;
 
 public class Main extends Application {
     public static Stage stage;
+    public MySimulatorModel m;
     @Override
     public void start(Stage primaryStage) throws Exception{
             stage = primaryStage;
-            MySimulatorModel m = new MySimulatorModel();
+            m = new MySimulatorModel();
             MainControllerViewModel vm = new MainControllerViewModel();
             m.addObserver(vm);
             vm.setModel(m);
@@ -28,10 +30,15 @@ public class Main extends Application {
             vm.addObserver(mwc);
             mwc.setViewModel(vm);
             primaryStage.setTitle("Simulator");
-            primaryStage.setScene(new Scene(root, 1150, 375));
+            primaryStage.setScene(new Scene(root, 1150, 450));
             primaryStage.show();
     }
 
+    @Override
+    public void stop() throws Exception {
+        super.stop();
+        m.getSolver().disconnect();
+    }
 
     public static void main(String[] args) {
         launch(args);

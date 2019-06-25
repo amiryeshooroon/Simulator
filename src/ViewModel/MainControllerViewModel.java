@@ -81,9 +81,6 @@ public class MainControllerViewModel extends Observable implements Observer {
             //can do connected if success like simulatorModel notifies viewModel and it notifies view and popup connected
         }
     }
-    public void engine(){
-        simulatorModel.engine();
-    }
     @Override
     public void update(java.util.Observable o, Object arg) {
         setChanged();
@@ -113,7 +110,7 @@ public class MainControllerViewModel extends Observable implements Observer {
         }
     }
     public void findPath(List<List<Double>> map, Pair<Integer, Integer> start, Pair<Integer, Integer> end){
-        simulatorModel.pathFly(map, start, end);
+        simulatorModel.calculatePath(map, start, end);
         path.set(simulatorModel.getPath());
     }
 }
