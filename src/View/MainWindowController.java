@@ -120,7 +120,7 @@ public class MainWindowController implements Initializable, Observer {
         double longtitude = 0, latitude = 0, area = 0;
         FileChooser fileChooser = new FileChooser();
         File file = fileChooser.showOpenDialog(Main.stage);
-        if(file!=null){
+        if(file!=null){//
             int i=0;
             List<List<Double>> records = new ArrayList<>();
             try (Scanner scanner = new Scanner(new BufferedInputStream(new FileInputStream(file)))) {
