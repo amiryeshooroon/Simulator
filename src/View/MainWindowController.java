@@ -151,12 +151,14 @@ public class MainWindowController implements Initializable, Observer {
                     }
                 }
             } catch (FileNotFoundException ignored) {}
+            stopPlaneMoving();
             mapDisplayer.displayMap(records, longtitude, latitude, area);
             isMapLoaded = true;
-            if(isConnectedToSimulator) planeMover();
-            loadData.setDisable(true);
+            if(isConnectedToSimulator)
+                planeMover();
+            //loadData.setDisable(true);
             calculatePath.setDisable(false);
-        }
+        }else calculatePath.setDisable(true);
     }
 
     public void onClickConnect(){
@@ -245,10 +247,10 @@ public class MainWindowController implements Initializable, Observer {
     public void planeMover(){
         stopPlaneMoving();
         vm.startPositionThread();
-        try {
-            Thread.sleep(20);
-        } catch (InterruptedException e) {
-        }
+//        try {
+//            Thread.sleep(20);
+//        } catch (InterruptedException e) {
+//        }
         //need to test
         timer = new AnimationTimer() {
             @Override
@@ -263,7 +265,7 @@ public class MainWindowController implements Initializable, Observer {
     }
 
     public void stopPlaneMoving(){
-        if(timer != null) timer.stop();
+        if(timer != null) {timer.stop(); }
     }
 
     public void finalize(){

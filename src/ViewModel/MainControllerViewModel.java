@@ -125,4 +125,7 @@ public class MainControllerViewModel extends Observable implements Observer {
         notifyObservers(new DisableMap(true));
         //path.set(simulatorModel.getPath()); //need to be deleted
     }
+    public void stopPositionThread(){
+        simulatorModel.stopPositionsThread();
+    }
 }
