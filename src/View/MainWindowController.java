@@ -50,6 +50,8 @@ public class MainWindowController implements Initializable, Observer {
     private Button loadData;
     @FXML
     private Button calculatePath;
+    @FXML
+    private Button connectBtn;
     private MainControllerViewModel vm;
     private CompositeProperty<Double> clickOnMapLocation;
     private StringProperty path;
@@ -189,6 +191,7 @@ public class MainWindowController implements Initializable, Observer {
             if (result.isPresent()) {
                 if (flag) succeed = vm.connectToSimulator();
                 else succeed = vm.connectToSolver();
+                if(flag && succeed) connectBtn.setDisable(true);
                 return succeed;
             }
         }

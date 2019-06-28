@@ -38,6 +38,7 @@ public class Main extends Application {
     public void stop() throws Exception {
         super.stop();
         m.getSolver().disconnect();
+        m.stopPositionsThread();
     }
 
     public static void main(String[] args) {
