@@ -154,11 +154,10 @@ public class MainWindowController implements Initializable, Observer {
             stopPlaneMoving();
             mapDisplayer.displayMap(records, longtitude, latitude, area);
             isMapLoaded = true;
-            if(isConnectedToSimulator)
-                planeMover();
-            //loadData.setDisable(true);
+            if(isConnectedToSimulator) planeMover();
+            loadData.setDisable(true);
             calculatePath.setDisable(false);
-        }else calculatePath.setDisable(true);
+        }
     }
 
     public void onClickConnect(){
