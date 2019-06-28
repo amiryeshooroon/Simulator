@@ -4,6 +4,8 @@ package ViewModel;
 import Exceptions.CantConnectToServerException;
 import Exceptions.CodeErrorException;
 import Exceptions.UpdateTypes;
+import Notifications.DisableMap;
+import Notifications.EndCalculatePath;
 import Utilities.AutoPilot.Intepeter.Parser;
 import Model.MySimulatorModel;
 import Utilities.Properties.CompositeProperty;
@@ -22,6 +24,7 @@ import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.Scanner;
+import java.util.concurrent.Executor;
 
 public class MainControllerViewModel extends Observable implements Observer {
     MySimulatorModel simulatorModel;
@@ -83,16 +86,23 @@ public class MainControllerViewModel extends Observable implements Observer {
     }
     @Override
     public void update(java.util.Observable o, Object arg) {
-        setChanged();
-        notifyObservers(arg);
+        if(arg instanceof CantConnectToServerException) {
+            setChanged();
+            notifyObservers(arg);
+        }
+        else if(arg instanceof EndCalculatePath){
+            path.set(simulatorModel.getPath());
+            setChanged();
+            notifyObservers(new DisableMap(false));
+        }
     }
 
     public double planeLong(){
-        return simulatorModel.getLongitude();
+        return simulatorModel.getLongitude(); //fast
     }
 
     public double planeLat(){
-        return simulatorModel.getLatitude();
+        return simulatorModel.getLatitude(); //fast
     }
 
     public void stopAutoPilot(){
@@ -110,7 +120,9 @@ public class MainControllerViewModel extends Observable implements Observer {
         }
     }
     public void findPath(List<List<Double>> map, Pair<Integer, Integer> start, Pair<Integer, Integer> end){
-        simulatorModel.calculatePath(map, start, end);
-        path.set(simulatorModel.getPath());
+        simulatorModel.calculatePath(map, start, end); //check if here put thread or there, I really don't care...
+        setChanged();
+        notifyObservers(new DisableMap(true));
+        //path.set(simulatorModel.getPath()); //need to be deleted
     }
 }

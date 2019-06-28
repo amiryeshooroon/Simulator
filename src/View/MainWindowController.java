@@ -3,10 +3,12 @@ package View;
 import Exceptions.CantConnectToServerException;
 import Exceptions.CodeErrorException;
 import Exceptions.WrongLimitError;
+import Notifications.DisableMap;
 import Utilities.Properties.CompositeProperty;
 import Utilities.Properties.MyProperty;
 import ViewModel.MainControllerViewModel;
 import javafx.animation.AnimationTimer;
+import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
@@ -46,6 +48,8 @@ public class MainWindowController implements Initializable, Observer {
     private ImageView planeImage;
     @FXML
     private Button loadData;
+    @FXML
+    private Button calculatePath;
     private MainControllerViewModel vm;
     private CompositeProperty<Double> clickOnMapLocation;
     private StringProperty path;
@@ -58,7 +62,7 @@ public class MainWindowController implements Initializable, Observer {
         vm.throttle.bind(throttleSlider.valueProperty());
         vm.rudder.bind(rudderSlider.valueProperty());
         vm.autopilotText.bind(autoPilotCode.textProperty());
-        path.bind(vm.path);
+        path.bind(vm.path); //not sure if it's mvvm but ok
         Platform.runLater(()-> {
             try {
                 vm.joyStick.bind(joyStick.getProperty());
@@ -80,6 +84,11 @@ public class MainWindowController implements Initializable, Observer {
             alert.setHeaderText("Code Error");
             alert.setContentText("Could not run code. Please check for errors.");
             alert.showAndWait();
+        }
+        else if(arg instanceof DisableMap){
+            DisableMap disableMap = (DisableMap)arg;
+            if(!disableMap.get()) mapDisplayer.drawPath(path.get());
+            mapDisplayer.setDisable(disableMap.get());
         }
         else{
             Integer i = (Integer)arg;
@@ -146,6 +155,7 @@ public class MainWindowController implements Initializable, Observer {
             isMapLoaded = true;
             if(isConnectedToSimulator) planeMover();
             loadData.setDisable(true);
+            calculatePath.setDisable(false);
         }
     }
 
@@ -163,7 +173,7 @@ public class MainWindowController implements Initializable, Observer {
             Pair<Integer, Integer> dstIndex = mapDisplayer.getClosestIndexes(mapDisplayer.getPrevXY(), mapDisplayer.getPrevXX()),
                     srcIndex = mapDisplayer.getClosestIndexes(mapDisplayer.getPlaneY(), mapDisplayer.getPlaneX());
             vm.findPath(mapDisplayer.getMap(), srcIndex, dstIndex);
-            new Thread(() -> mapDisplayer.drawPath(path.get())).start();
+            //new Thread(() -> mapDisplayer.drawPath(path.get())).start(); //need to be deleted
         }
     }
 
@@ -185,14 +195,16 @@ public class MainWindowController implements Initializable, Observer {
     }
 
     public void clickOnMap(MouseEvent mouseEvent) {
-        x.set(mouseEvent.getX());
-        y.set(mouseEvent.getY());
-        mapDisplayer.drawX(mouseEvent.getX(), mouseEvent.getY());
-        if(isConnectedToSolver) {
-            Pair<Integer, Integer> dstIndex = mapDisplayer.getClosestIndexes(mapDisplayer.getPrevXY(), mapDisplayer.getPrevXX()),
-                    srcIndex = mapDisplayer.getClosestIndexes(mapDisplayer.getPlaneY(), mapDisplayer.getPlaneX());
-            vm.findPath(mapDisplayer.getMap(), srcIndex, dstIndex);
-            mapDisplayer.drawPath(path.get());
+        if(!mapDisplayer.isDisable()) {
+            x.set(mouseEvent.getX());
+            y.set(mouseEvent.getY());
+            mapDisplayer.drawX(mouseEvent.getX(), mouseEvent.getY());
+            if (isConnectedToSolver) {
+                Pair<Integer, Integer> dstIndex = mapDisplayer.getClosestIndexes(mapDisplayer.getPrevXY(), mapDisplayer.getPrevXX()),
+                        srcIndex = mapDisplayer.getClosestIndexes(mapDisplayer.getPlaneY(), mapDisplayer.getPlaneX());
+                vm.findPath(mapDisplayer.getMap(), srcIndex, dstIndex);
+                mapDisplayer.drawPath(path.get()); //need to be deleted
+            }
         }
     }
 

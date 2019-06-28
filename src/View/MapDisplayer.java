@@ -52,6 +52,8 @@ public class MapDisplayer extends Canvas {
     }
 
     public void displayMap(List<List<Double>> newMap, double longitude, double latitude, double area){
+        //if we succeed close every this it's will be great
+        //if it happens we can stay load data as is.
         map = newMap;
         gc = null;
         prevXX = 0;
@@ -91,12 +93,15 @@ public class MapDisplayer extends Canvas {
                 redrawAt(i,j);
     }
     public void redrawAt(int i, int j){
+       // gc.clearRect(j*cellWidth, i*cellHighet, cellWidth, cellHighet);
         gc.setFill(Color.color( 1 - (map.get(i).get(j)-minHighet)/(maxHighet-minHighet), (map.get(i).get(j)-minHighet)/(maxHighet-minHighet),0));
         gc.fillRect(j*cellWidth, i*cellHighet, cellWidth, cellHighet);
     }
     public void drawX(double x, double y){
         if(gc != null) {
-            redrawAt((int)(prevXY/cellHighet), (int)(prevXX / cellWidth));
+            gc.clearRect(0,0,gc.getCanvas().getWidth(), gc.getCanvas().getHeight());
+            redraw();
+            //redrawAt((int)(prevXY/cellHighet), (int)(prevXX / cellWidth));
             gc.drawImage(xPhoto, ((int)(x / cellWidth))*cellWidth, ((int)(y/cellHighet))*cellHighet, cellWidth, cellHighet);
             prevXX = ((int)(x / cellWidth))*cellWidth;
             prevXY = ((int)(y/cellHighet))*cellHighet;
@@ -107,10 +112,12 @@ public class MapDisplayer extends Canvas {
     }
     public void drawPath(String path){
         if(pathIndexes != null) {
-            for (Pair<Double, Double> pair : pathIndexes) {
-                redrawAt((int) (pair.getValue() / cellHighet), (int) (pair.getKey() / cellWidth));
-            }
-            pathIndexes.clear();
+//            for (Pair<Double, Double> pair : pathIndexes) {
+//                redrawAt((int) (pair.getKey() / cellWidth), (int) (pair.getValue() / cellHighet));
+//            }
+//            pathIndexes.clear();
+            gc.clearRect(0,0,gc.getCanvas().getWidth(), gc.getCanvas().getHeight());
+            redraw();
         }
         else pathIndexes = new ArrayList<>();
         drawX(prevXX, prevXY);

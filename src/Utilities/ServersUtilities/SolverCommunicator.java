@@ -4,7 +4,7 @@ import java.io.*;
 import java.net.Socket;
 import java.net.SocketException;
 
-public class SolverCommunicator {
+public class SolverCommunicator { //notify to close the server maybe it can be an Observable
     private Socket solver;
     private BufferedReader br;
     private PrintWriter pr;

@@ -1,6 +1,7 @@
 package Model;
 
 import Exceptions.CodeErrorException;
+import Notifications.EndCalculatePath;
 import Utilities.AutoPilot.Exceptions.NotConnectedToServerException;
 import Utilities.AutoPilot.Intepeter.Parser;
 import javafx.util.Pair;
@@ -59,17 +60,21 @@ public class MySimulatorModel extends Observable implements SimulatorModel {
     @Override
     public void calculatePath(List<List<Double>> map, Pair<Integer, Integer> start, Pair<Integer, Integer> end) {
         //can maybe announce on label that we calculating
-        for (List<Double> doubles : map) {
-            for (int j = 0; j < doubles.size() - 1; j++) {
-                solver.sendLineWithNoLineSeperator(doubles.get(j) + ",");
+        new Thread(()->{
+            for (List<Double> doubles : map) {
+                for (int j = 0; j < doubles.size() - 1; j++) {
+                    solver.sendLineWithNoLineSeperator(doubles.get(j) + ",");
+                }
+                solver.sendLineWithLineSeperator(doubles.get(doubles.size() - 1).toString());
             }
-            solver.sendLineWithLineSeperator(doubles.get(doubles.size() - 1).toString());
-        }
-        solver.sendLineWithLineSeperator("end");
-        solver.sendLineWithLineSeperator(start.getKey().toString() + "," + start.getValue().toString());
-        solver.sendLineWithLineSeperator(end.getKey().toString() + "," + end.getValue().toString());
-        solver.flushOutput();
-        path = solver.readLine();
+            solver.sendLineWithLineSeperator("end");
+            solver.sendLineWithLineSeperator(start.getKey().toString() + "," + start.getValue().toString());
+            solver.sendLineWithLineSeperator(end.getKey().toString() + "," + end.getValue().toString());
+            solver.flushOutput();
+            path = solver.readLine();
+            setChanged();
+            notifyObservers(new EndCalculatePath());
+        }).start();
     }
     public String getPath(){
         return path;
