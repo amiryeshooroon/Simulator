@@ -4,6 +4,7 @@ import Exceptions.CantConnectToServerException;
 import Exceptions.CodeErrorException;
 import Exceptions.WrongLimitError;
 import Notifications.DisableMap;
+import Notifications.DisplayToConsole;
 import Utilities.Properties.CompositeProperty;
 import Utilities.Properties.MyProperty;
 import ViewModel.MainControllerViewModel;
@@ -52,6 +53,8 @@ public class MainWindowController implements Initializable, Observer {
     private Button calculatePath;
     @FXML
     private Button connectBtn;
+    @FXML
+    private TextArea interConsole;
     private MainControllerViewModel vm;
     private CompositeProperty<Double> clickOnMapLocation;
     private StringProperty path;
@@ -65,6 +68,7 @@ public class MainWindowController implements Initializable, Observer {
         vm.rudder.bind(rudderSlider.valueProperty());
         vm.autopilotText.bind(autoPilotCode.textProperty());
         path.bind(vm.path); //not sure if it's mvvm but ok
+        interConsole.textProperty().bind(vm.consoleText);
         Platform.runLater(()-> {
             try {
                 vm.joyStick.bind(joyStick.getProperty());
@@ -91,6 +95,10 @@ public class MainWindowController implements Initializable, Observer {
             DisableMap disableMap = (DisableMap)arg;
             if(!disableMap.get()) mapDisplayer.drawPath(path.get());
             mapDisplayer.setDisable(disableMap.get());
+        }
+        else if(arg instanceof  DisplayToConsole){
+            interConsole.selectEnd();
+            interConsole.deselect();
         }
         else{
             Integer i = (Integer)arg;
@@ -122,6 +130,8 @@ public class MainWindowController implements Initializable, Observer {
         isConnectedToSimulator = false;
         planeImage.setImage(new Image(getClass().getResource("plane.png").toString()));
         planeImage.setVisible(false);
+        interConsole.setVisible(false);
+        interConsole.setEditable(false);
         try {
             clickOnMapLocation.bind(new Pair<String, MyProperty<Double>>("x", x), new Pair<String, MyProperty<Double>>("y", y));
         } catch (WrongLimitError ignored) {}
@@ -239,11 +249,16 @@ public class MainWindowController implements Initializable, Observer {
         vm.stopAutoPilot();
         autoPilotPane.setDisable(true);
         joystickPane.setDisable(false);
+        interConsole.setVisible(false);
     }
 
     public void selectAutoPilot(ActionEvent actionEvent) {
         autoPilotPane.setDisable(false);
         joystickPane.setDisable(true);
+        interConsole.setEditable(true);
+            interConsole.clear();
+            interConsole.setEditable(false);
+            interConsole.setVisible(true);
     }
 
     public void planeMover(){

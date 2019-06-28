@@ -42,20 +42,21 @@
                         <ToggleGroup fx:id="group" />
                     </toggleGroup>
                 </RadioButton>
-                <RadioButton focusTraversable="false" layoutX="955.0" layoutY="30.0" mnemonicParsing="false" onAction="#selectManual" prefHeight="20.0" prefWidth="117.0" selected="true" text="Manual" toggleGroup="$group">
+                <RadioButton focusTraversable="false" layoutX="1065.0" layoutY="30.0" mnemonicParsing="false" onAction="#selectManual" prefHeight="20.0" prefWidth="117.0" selected="true" text="Manual" toggleGroup="$group">
                     <font>
                         <Font size="20.0" />
                     </font>
                 </RadioButton>
                 <MapDisplayer fx:id="mapDisplayer" height="368.0" layoutX="10.0" layoutY="73.0" onMouseClicked="#clickOnMap" width="470.0" />
-                <Pane fx:id="autoPilotPane" disable="true" layoutX="472.0" layoutY="61.0" maxWidth="810.0" prefHeight="384.0" prefWidth="342.0">
+                <Pane fx:id="autoPilotPane" disable="true" layoutX="472.0" layoutY="61.0" maxWidth="810.0" prefHeight="384.0" prefWidth="470.0">
                     <children>
                     <Button layoutX="239.0" layoutY="44.0" mnemonicParsing="false" onAction="#fly" prefHeight="3.0" prefWidth="89.0" text="Run" />
                         <Button layoutX="239.0" layoutY="9.0" mnemonicParsing="false" onAction="#loadScript" text="Load Script" />
                     <TextArea fx:id="autoPilotCode" layoutX="28.0" layoutY="7.0" prefHeight="372.0" prefWidth="204.0" />
+                  <TextArea fx:id="interConsole" layoutX="238.0" layoutY="84.0" prefHeight="296.0" prefWidth="227.0" />
                     </children>
                 </Pane>
-                <AnchorPane fx:id="joystickPane" layoutX="810.0" layoutY="57.0" prefHeight="296.0" prefWidth="406.0">
+                <AnchorPane fx:id="joystickPane" layoutX="912.0" layoutY="57.0" prefHeight="296.0" prefWidth="316.0">
                <children>
                       <Label layoutX="163.0" layoutY="33.0" prefHeight="24.0" prefWidth="99.0" text="⇦ aileron ⇨" textAlignment="CENTER">
                      <font>

@@ -5,6 +5,7 @@ import Exceptions.CantConnectToServerException;
 import Exceptions.CodeErrorException;
 import Exceptions.UpdateTypes;
 import Notifications.DisableMap;
+import Notifications.DisplayToConsole;
 import Notifications.EndCalculatePath;
 import Utilities.AutoPilot.Intepeter.Parser;
 import Model.MySimulatorModel;
@@ -30,6 +31,7 @@ public class MainControllerViewModel extends Observable implements Observer {
     MySimulatorModel simulatorModel;
     public StringProperty autopilotText;
     public StringProperty ipPortText;
+    public StringProperty consoleText;
     public DoubleProperty throttle, rudder;
     public CompositeProperty<Double> joyStick;
     public CompositeProperty<Double> clickOnMapLocation;
@@ -39,6 +41,7 @@ public class MainControllerViewModel extends Observable implements Observer {
         ipPortText = new SimpleStringProperty();
         throttle = new SimpleDoubleProperty();
         path = new SimpleStringProperty();
+        consoleText = new SimpleStringProperty();
         joyStick = new CompositeProperty<>(2);
         joyStick.setOnUpdate(()->
                 {
@@ -86,14 +89,20 @@ public class MainControllerViewModel extends Observable implements Observer {
     }
     @Override
     public void update(java.util.Observable o, Object arg) {
-        if(arg instanceof CantConnectToServerException) {
-            setChanged();
-            notifyObservers(arg);
-        }
-        else if(arg instanceof EndCalculatePath){
+        if(arg instanceof EndCalculatePath){
             path.set(simulatorModel.getPath());
             setChanged();
             notifyObservers(new DisableMap(false));
+        }
+        else if(arg instanceof DisplayToConsole){
+            if(consoleText.getValue() != null) consoleText.set(consoleText.getValue() + ((DisplayToConsole) arg).getMsg() + "\n");
+            else consoleText.set(((DisplayToConsole) arg).getMsg() + "\n");
+            setChanged();
+            notifyObservers(arg);
+        }
+        else{
+            setChanged();
+            notifyObservers(arg);
         }
     }
 

@@ -1,5 +1,6 @@
 package Utilities.AutoPilot.Intepeter.Commands;
 
+import Notifications.DisplayToConsole;
 import Utilities.AutoPilot.Intepeter.InterpterUtilities.StringToArgumentParser;
 import Utilities.AutoPilot.Intepeter.Parser;
 import Utilities.AutoPilot.Intepeter.TypeArguments;
@@ -17,8 +18,10 @@ public class PrintCommand implements Command {
     public void doCommand(List<Object> args) {
         String str = (String)args.get(1);
         Var v;
-        if((v=Parser.getInstance().getLastScope().getVar(str))!=null) System.out.println(v.calculate());
-        else System.out.println(str);
+        Parser.getInstance().myModel.setModelChanged();
+        if((v=Parser.getInstance().getLastScope().getVar(str))!=null)
+            Parser.getInstance().myModel.notifyObservers(new DisplayToConsole(String.valueOf(v.calculate())));
+        else Parser.getInstance().myModel.notifyObservers(new DisplayToConsole(str));
     }
 
 }
