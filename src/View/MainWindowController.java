@@ -9,7 +9,6 @@ import Utilities.Properties.CompositeProperty;
 import Utilities.Properties.MyProperty;
 import ViewModel.MainControllerViewModel;
 import javafx.animation.AnimationTimer;
-import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
@@ -27,7 +26,6 @@ import javafx.scene.image.ImageView;
 import java.io.*;
 import java.net.URL;
 import java.util.*;
-import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 public class MainWindowController implements Initializable, Observer {
@@ -67,7 +65,7 @@ public class MainWindowController implements Initializable, Observer {
         vm.throttle.bind(throttleSlider.valueProperty());
         vm.rudder.bind(rudderSlider.valueProperty());
         vm.autopilotText.bind(autoPilotCode.textProperty());
-        path.bind(vm.path); //not sure if it's mvvm but ok
+        path.bind(vm.path);
         interConsole.textProperty().bind(vm.consoleText);
         Platform.runLater(()-> {
             try {
