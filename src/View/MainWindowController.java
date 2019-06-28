@@ -163,7 +163,7 @@ public class MainWindowController implements Initializable, Observer {
     public void onClickConnect(){
         boolean succeed = connector(true);
         if(succeed) {
-            isConnectedToSimulator = true;
+            isConnectedToSimulator = true;//
             if(isMapLoaded) planeMover();
         }
 
